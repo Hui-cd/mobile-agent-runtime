@@ -1,0 +1,37 @@
+{
+  "name": "mobile-agent-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A cross-platform mobile agent runtime for Android, iOS, MCP, and BYOK model gateways.",
+  "bin": {
+    "mobile-agent-runtime": "dist/server.js",
+    "mobile-agent-gateway": "dist/gateway/server.js"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "android:build": "JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home' ANDROID_HOME='/Users/naitang/Library/Android/sdk' apps/android/gradlew -p apps/android :app:assembleDebug",
+    "ios:typecheck": "apps/ios/typecheck.sh",
+    "ios:build": "DEVELOPER_DIR='/Applications/Xcode.app/Contents/Developer' xcodebuild -project apps/ios/MobileAgentIOS.xcodeproj -scheme MobileAgent -sdk iphonesimulator -configuration Debug -derivedDataPath apps/ios/DerivedData build",
+    "clean": "rimraf dist",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/server.js",
+    "gateway": "node dist/gateway/server.js",
+    "dev": "tsx src/server.ts",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "fast-xml-parser": "^5.3.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

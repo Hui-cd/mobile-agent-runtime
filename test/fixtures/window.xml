@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hierarchy rotation="0">
+  <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="com.example" content-desc="" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" selected="false" bounds="[0,0][1080,2400]">
+    <node index="0" text="Search" resource-id="com.example:id/search" class="android.widget.Button" package="com.example" content-desc="Search contacts" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" selected="false" bounds="[100,200][500,320]" />
+    <node index="1" text="" resource-id="com.example:id/message" class="android.widget.EditText" package="com.example" content-desc="Message" clickable="true" enabled="true" focusable="true" focused="true" scrollable="false" selected="false" bounds="[40,2000][900,2180]" />
+  </node>
+</hierarchy>

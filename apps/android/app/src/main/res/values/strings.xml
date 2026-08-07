@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Mobile Agent</string>
+    <string name="accessibility_description">Allows Mobile Agent to observe and operate apps only for tasks you explicitly start.</string>
+</resources>

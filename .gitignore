@@ -2,12 +2,27 @@ node_modules/
 dist/
 *.log
 .DS_Store
+.env
+.env.*
+!.env.example
+
+# Android / Gradle
 .gradle/
 .gradle-bootstrap/
 **/build/
-**/DerivedData/
-xcuserdata/
-.swiftpm/
+**/.kotlin/
 local.properties
 *.jks
 *.keystore
+
+# iOS / Xcode
+**/DerivedData*/
+xcuserdata/
+*.xcuserstate
+*.xcarchive
+*.ipa
+.swiftpm/
+
+# Apple signing material
+*.mobileprovision
+*.p12

@@ -44,7 +44,7 @@ jobs:
           packages: "platform-tools"
           log-accepted-android-sdk-licenses: false
       - name: Install Android 17 preview SDK
-        run: sdkmanager "platforms;android-37" "build-tools;37.0.0" --channel=3
+        run: sdkmanager "platforms;android-37.0" "build-tools;37.0.0" --channel=3
       - run: npm ci
       - run: npm run android:test
       - run: npm run android:build

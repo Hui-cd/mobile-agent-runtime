@@ -157,7 +157,9 @@ class MobileAgentAccessibilityService : AccessibilityService() {
                     ?: allNodes().firstOrNull { it.isScrollable } ?: error("SCROLL_TARGET_NOT_FOUND")
                 val direction = arguments.optString("direction", "up")
                 val code = if (direction == "up" || direction == "left") AccessibilityNodeInfo.ACTION_SCROLL_FORWARD else AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD
-                check(node.performAction(code)) { "SCROLL_FAILED" }
+                if (!node.performAction(code)) {
+                    swipe(direction, arguments.optLong("duration_ms", 500))
+                }
             }
             "swipe" -> swipe(arguments.optString("direction", "up"), arguments.optLong("duration_ms", 500))
             else -> error("UNSUPPORTED_ACTION: $action")

@@ -2,6 +2,7 @@
   "name": "mobile-agent-runtime",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "type": "module",
   "description": "A cross-platform mobile agent runtime for Android, iOS, MCP, and BYOK model gateways.",
   "bin": {
@@ -10,26 +11,35 @@
   },
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.build.json",
-    "android:build": "JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home' ANDROID_HOME='/Users/naitang/Library/Android/sdk' apps/android/gradlew -p apps/android :app:assembleDebug",
+    "android:build": "apps/android/gradlew -p apps/android :app:assembleDebug",
+    "android:test": "apps/android/gradlew -p apps/android :app:testDebugUnitTest",
     "ios:typecheck": "apps/ios/typecheck.sh",
-    "ios:build": "DEVELOPER_DIR='/Applications/Xcode.app/Contents/Developer' xcodebuild -project apps/ios/MobileAgentIOS.xcodeproj -scheme MobileAgent -sdk iphonesimulator -configuration Debug -derivedDataPath apps/ios/DerivedData build",
+    "ios:build": "xcodebuild -project apps/ios/MobileAgentIOS.xcodeproj -scheme MobileAgent -sdk iphonesimulator -configuration Debug -derivedDataPath apps/ios/DerivedData build",
     "clean": "rimraf dist",
     "check": "tsc -p tsconfig.json --noEmit",
     "start": "node dist/server.js",
     "gateway": "node dist/gateway/server.js",
     "dev": "tsx src/server.ts",
-    "test": "tsx --test test/**/*.test.ts"
+    "test": "tsx --test test/**/*.test.ts",
+    "pi:bundle:browser": "esbuild src/pi/mobile-core-fixture.ts --bundle --platform=browser --format=esm --alias:@mariozechner/pi-ai=./src/pi/pi-ai-mobile-shim.ts --outfile=dist/pi-mobile-core-fixture.js",
+    "pi:test:browser": "npm run pi:bundle:browser && node scripts/verify-pi-browser-bundle.mjs",
+    "pi:bundle:webview": "node scripts/build-pi-webview.mjs",
+    "benchmark:summary": "node scripts/summarize-benchmark.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
+    "@mariozechner/pi-agent-core": "^0.73.1",
+    "@mariozechner/pi-ai": "^0.73.1",
     "@modelcontextprotocol/server": "2.0.0",
     "fast-xml-parser": "^5.3.3",
+    "typebox": "^1.1.24",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
+    "esbuild": "^0.25.9",
     "rimraf": "^6.0.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"

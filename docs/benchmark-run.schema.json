@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mobile-agent.local/schemas/benchmark-run-v1.json",
+  "title": "Mobile Agent Benchmark Run v1",
+  "type": "object",
+  "required": [
+    "schema_version", "run_id", "started_at", "platform", "environment", "dev_only",
+    "runtime_version", "agent_runtime", "model", "backend", "task_id", "attempt", "status",
+    "duration_ms", "agent_turns", "model_calls", "tool_calls", "manual_takeovers",
+    "foreground_interrupt_ms", "crash", "observation_failures", "action_failures", "result", "evidence"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "adjudicator_version": { "type": "integer", "minimum": 1 },
+    "run_id": { "type": "string", "format": "uuid" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "platform": { "enum": ["android", "ios"] },
+    "environment": { "enum": ["emulator", "simulator", "physical_device"] },
+    "dev_only": { "type": "boolean" },
+    "runtime_carrier": { "type": "string" },
+    "model_endpoint_host": { "type": ["string", "null"] },
+    "benchmark_cohort": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,64}$" },
+    "backend": {
+      "enum": [
+        "android_accessibility_foreground", "android_computer_control_background",
+        "ios_app_intent_public", "ios_livecontainer_research"
+      ]
+    },
+    "task_id": { "type": "string" },
+    "attempt": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["success", "failed", "cancelled", "completed_unverified", "unsupported"] },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "agent_turns": { "type": "integer", "minimum": 0 },
+    "model_calls": { "type": "integer", "minimum": 0 },
+    "tool_calls": { "type": "integer", "minimum": 0 },
+    "manual_takeovers": { "type": "integer", "minimum": 0 },
+    "foreground_interrupt_ms": { "type": "integer", "minimum": 0 },
+    "crash": { "type": "boolean" },
+    "login_lost": { "type": ["boolean", "null"] },
+    "login_state_before": { "enum": ["signed_in", "signed_out", "not_applicable", "unknown"] },
+    "login_state_after": { "enum": ["signed_in", "signed_out", "not_applicable", "unknown"] },
+    "permission_lost": { "type": ["boolean", "null"] },
+    "observation_failures": { "type": "integer", "minimum": 0 },
+    "action_failures": { "type": "integer", "minimum": 0 },
+    "result": {},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["observed_at", "tool", "result_sha256", "is_error"],
+        "properties": {
+          "tool": { "enum": ["device_observe", "device_act", "device_invoke"] },
+          "result_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "screenshot_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "current_app": { "type": ["string", "null"] },
+          "action": { "type": ["string", "null"] },
+          "capability": { "type": ["string", "null"] },
+          "target_host": { "type": ["string", "null"] },
+          "target_reference_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "search_query_present": { "type": "boolean" },
+          "visible_text_count": { "type": "integer", "minimum": 0 },
+          "network_error_visible": { "type": "boolean" },
+          "login_state": { "enum": ["signed_in", "signed_out", "not_applicable", "unknown"] },
+          "error_code": { "type": ["string", "null"] },
+          "is_error": { "type": "boolean" }
+        }
+      }
+    },
+    "failure_code": { "type": ["string", "null"] },
+    "failure_stage": { "type": ["string", "null"] },
+    "notes": { "type": ["string", "null"] }
+  }
+}

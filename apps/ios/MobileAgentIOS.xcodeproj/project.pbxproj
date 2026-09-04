@@ -10,11 +10,12 @@
 		A10000000000000000000002 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* Models.swift */; };
 		A10000000000000000000003 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* KeychainStore.swift */; };
 		A10000000000000000000004 /* KimiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* KimiClient.swift */; };
-		A10000000000000000000005 /* AgentEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* AgentEngine.swift */; };
 		A10000000000000000000006 /* IOSDeviceRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* IOSDeviceRuntime.swift */; };
 		A10000000000000000000007 /* AgentSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* AgentSession.swift */; };
 		A10000000000000000000008 /* MobileAgentIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* MobileAgentIntents.swift */; };
 		A10000000000000000000009 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* ContentView.swift */; };
+		A1000000000000000000000A /* PiCoreFixtureRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* PiCoreFixtureRunner.swift */; };
+		A1000000000000000000000B /* BenchmarkRunStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* BenchmarkRunStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,13 +23,14 @@
 		A20000000000000000000002 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/Models.swift; sourceTree = "<group>"; };
 		A20000000000000000000003 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security/KeychainStore.swift; sourceTree = "<group>"; };
 		A20000000000000000000004 /* KimiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent/KimiClient.swift; sourceTree = "<group>"; };
-		A20000000000000000000005 /* AgentEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent/AgentEngine.swift; sourceTree = "<group>"; };
 		A20000000000000000000006 /* IOSDeviceRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime/IOSDeviceRuntime.swift; sourceTree = "<group>"; };
 		A20000000000000000000007 /* AgentSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session/AgentSession.swift; sourceTree = "<group>"; };
 		A20000000000000000000008 /* MobileAgentIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intents/MobileAgentIntents.swift; sourceTree = "<group>"; };
 		A20000000000000000000009 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/ContentView.swift; sourceTree = "<group>"; };
 		A2000000000000000000000A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2000000000000000000000B /* MobileAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000C /* PiCoreFixtureRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime/PiCoreFixtureRunner.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* BenchmarkRunStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime/BenchmarkRunStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,11 +58,12 @@
 				A20000000000000000000002 /* Models.swift */,
 				A20000000000000000000003 /* KeychainStore.swift */,
 				A20000000000000000000004 /* KimiClient.swift */,
-				A20000000000000000000005 /* AgentEngine.swift */,
 				A20000000000000000000006 /* IOSDeviceRuntime.swift */,
 				A20000000000000000000007 /* AgentSession.swift */,
 				A20000000000000000000008 /* MobileAgentIntents.swift */,
 				A20000000000000000000009 /* ContentView.swift */,
+				A2000000000000000000000C /* PiCoreFixtureRunner.swift */,
+				A2000000000000000000000D /* BenchmarkRunStore.swift */,
 				A2000000000000000000000A /* Info.plist */,
 			);
 			path = MobileAgent;
@@ -82,6 +85,7 @@
 				A30000000000000000000002 /* Sources */,
 				A30000000000000000000001 /* Frameworks */,
 				A30000000000000000000003 /* Resources */,
+				A30000000000000000000004 /* Bundle Pi mobile runtime */,
 			);
 			buildRules = ();
 			dependencies = ();
@@ -123,6 +127,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A30000000000000000000004 /* Bundle Pi mobile runtime */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = ();
+			inputFileListPaths = ();
+			inputPaths = ();
+			name = "Bundle Pi mobile runtime";
+			outputFileListPaths = ();
+			outputPaths = ();
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nnpm run pi:bundle:webview\nmkdir -p \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\ncp \"dist/pi-webview/pi-mobile-runtime.js\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pi-mobile-runtime.js\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A30000000000000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -132,11 +153,12 @@
 				A10000000000000000000002 /* Models.swift in Sources */,
 				A10000000000000000000003 /* KeychainStore.swift in Sources */,
 				A10000000000000000000004 /* KimiClient.swift in Sources */,
-				A10000000000000000000005 /* AgentEngine.swift in Sources */,
 				A10000000000000000000006 /* IOSDeviceRuntime.swift in Sources */,
 				A10000000000000000000007 /* AgentSession.swift in Sources */,
 				A10000000000000000000008 /* MobileAgentIntents.swift in Sources */,
 				A10000000000000000000009 /* ContentView.swift in Sources */,
+				A1000000000000000000000A /* PiCoreFixtureRunner.swift in Sources */,
+				A1000000000000000000000B /* BenchmarkRunStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +200,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MobileAgent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -198,6 +221,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MobileAgent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -232,4 +256,3 @@
 	};
 	rootObject = A60000000000000000000001 /* Project object */;
 }
-

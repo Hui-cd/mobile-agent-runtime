@@ -12,20 +12,29 @@ final class AgentSession: ObservableObject {
     @Published private(set) var currentStep = ""
     @Published private(set) var approval: ApprovalRequest?
     @Published private(set) var keyConfigured: Bool
+    @Published private(set) var endpoint: ModelEndpoint
     @Published var configurationError: String?
 
     private let keychain = KeychainStore()
+    private let endpointStore = ModelEndpointStore()
     private var task: Task<Void, Never>?
     private var approvalContinuation: CheckedContinuation<Bool, Never>?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 
     private init() {
+        BenchmarkRunStore.reconcileInterrupted()
+        endpoint = endpointStore.load()
         keyConfigured = keychain.load()?.isEmpty == false
     }
 
-    func saveAPIKey(_ value: String) {
+    func saveConfiguration(apiKey: String, baseURL: String, model: String) {
         do {
-            try keychain.save(value.trimmingCharacters(in: .whitespacesAndNewlines))
+            let validatedEndpoint = try ModelEndpoint(baseURL: baseURL, model: model)
+            try keychain.save(apiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+            endpoint = try endpointStore.save(
+                baseURL: validatedEndpoint.baseURL.absoluteString,
+                model: validatedEndpoint.model
+            )
             keyConfigured = true
             configurationError = nil
         } catch {
@@ -43,12 +52,22 @@ final class AgentSession: ObservableObject {
         let normalized = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !isRunning, !normalized.isEmpty else { return }
         guard let key = keychain.load(), !key.isEmpty else {
-            add(.error, "请先保存 Kimi API Key。")
+            add(.error, "请先保存模型 API Key。")
             return
         }
 
-        let history = messages.filter { $0.role == .user || $0.role == .agent }.suffix(12)
         isRunning = true
+        let metrics = PiRunMetrics()
+        let benchmarkRun = BenchmarkRunStore(
+            prompt: normalized,
+            metrics: metrics,
+            model: endpoint.model,
+            modelEndpointHost: endpoint.host
+        )
+        let benchmarkMode = normalized.hasPrefix("[BENCH:")
+        let runtimePrompt = benchmarkMode
+            ? "\(normalized)\n\n<benchmark_contract>最终只输出合法 JSON，不要 Markdown，不要代码围栏；字段和数量严格遵守任务中给出的结构。</benchmark_contract>"
+            : normalized
         status = .thinking
         currentStep = "正在读取 iOS Context"
         add(.user, normalized)
@@ -59,9 +78,12 @@ final class AgentSession: ObservableObject {
             defer { self.finishBackgroundTime() }
             do {
                 _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
-                let engine = AgentEngine(
-                    client: KimiClient(apiKey: key),
+                let result = try await PiCoreFixtureRunner.shared.run(
+                    client: OpenAICompatibleClient(apiKey: key, endpoint: endpoint),
                     runtime: IOSDeviceRuntime(),
+                    prompt: runtimePrompt,
+                    messagesJSON: benchmarkMode ? nil : UserDefaults.standard.string(forKey: "pi-agent-messages"),
+                    metrics: metrics,
                     onStep: { [weak self] step in
                         self?.status = .acting
                         self?.currentStep = step
@@ -72,18 +94,22 @@ final class AgentSession: ObservableObject {
                         return await self.waitForApproval(description)
                     }
                 )
-                let answer = try await engine.run(prompt: normalized, history: Array(history))
+                let answer = result.finalText
+                if !benchmarkMode { UserDefaults.standard.set(result.messagesJSON, forKey: "pi-agent-messages") }
+                benchmarkRun.complete(answer: answer)
                 add(.agent, answer)
                 isRunning = false
                 status = .complete
                 currentStep = "任务完成"
                 await notifyIfBackground(title: "Mobile Agent", body: answer)
             } catch is CancellationError {
+                benchmarkRun.cancel()
                 add(.status, "任务已停止")
                 isRunning = false
                 status = .idle
                 currentStep = ""
             } catch {
+                benchmarkRun.fail(error)
                 add(.error, error.localizedDescription)
                 isRunning = false
                 status = .error
@@ -97,6 +123,7 @@ final class AgentSession: ObservableObject {
         approvalContinuation?.resume(returning: false)
         approvalContinuation = nil
         approval = nil
+        PiCoreFixtureRunner.shared.cancel()
         task?.cancel()
     }
 

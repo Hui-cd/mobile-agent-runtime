@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17151d" />
+    <title>Mobile Agent · Interaction Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#" data-action="home" aria-label="返回原型首页">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span>Mobile Agent</span>
+      </a>
+      <div class="prototype-label">
+        <span class="live-dot"></span>
+        Android 交互原型
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="device-stage" aria-label="手机交互原型">
+        <div class="phone" id="phone">
+          <div class="status-bar" aria-hidden="true">
+            <span id="statusTime">10:42</span>
+            <span class="system-icons">
+              <svg viewBox="0 0 20 14"><path d="M2 11h2V8H2v3Zm4 0h2V6H6v5Zm4 0h2V3h-2v8Zm4 0h2V1h-2v10Z"/></svg>
+              <svg viewBox="0 0 20 14"><path d="M2 5.5A11 11 0 0 1 18 5.5M5 8.5a7 7 0 0 1 10 0M8.4 11.3a2.4 2.4 0 0 1 3.2 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span class="battery"><i></i></span>
+            </span>
+          </div>
+          <div id="phoneContent" class="phone-content" aria-live="polite"></div>
+          <div class="home-indicator" aria-hidden="true"></div>
+          <div class="toast" id="toast" role="status"></div>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="原型控制面板">
+        <p class="eyebrow">体验模型</p>
+        <h1>控制权始终<br />清楚可见</h1>
+        <p class="inspector-copy">
+          用户给目标，不教步骤。Agent 先确认边界，再行动；只有风险或不确定性出现时才打断用户。
+        </p>
+
+        <div class="control-flow" aria-label="控制权流转">
+          <div><span class="flow-index">1</span><p><b>委托</b><small>用户表达目标</small></p></div>
+          <i></i>
+          <div><span class="flow-index">2</span><p><b>执行</b><small>Agent 在边界内行动</small></p></div>
+          <i></i>
+          <div><span class="flow-index">3</span><p><b>交还</b><small>确认、恢复或闭环</small></p></div>
+        </div>
+
+        <div class="scenario-panel">
+          <p class="scenario-title">选择一条体验路径</p>
+          <button class="scenario active" data-flow="normal">
+            <span class="scenario-icon violet">✓</span>
+            <span><b>普通完成</b><small>只读任务，不打断用户</small></span>
+          </button>
+          <button class="scenario" data-flow="risk">
+            <span class="scenario-icon coral">!</span>
+            <span><b>风险确认</b><small>产生外部影响前交还控制</small></span>
+          </button>
+          <button class="scenario" data-flow="recovery">
+            <span class="scenario-icon amber">↗</span>
+            <span><b>异常恢复</b><small>遇到登录阻塞，保存进度</small></span>
+          </button>
+        </div>
+
+        <button class="text-link" data-action="onboarding">查看首次配置 <span>→</span></button>
+        <p class="prototype-note">这是独立设计原型，不会连接模型或操作设备。</p>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

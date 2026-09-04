@@ -13,7 +13,7 @@ data class ChatMessage(
     val timestamp: Long = System.currentTimeMillis(),
 )
 
-enum class AgentStatus { IDLE, THINKING, ACTING, WAITING_APPROVAL, COMPLETE, ERROR }
+enum class AgentStatus { IDLE, THINKING, ACTING, WAITING_APPROVAL, COMPLETE, ERROR, CANCELLED }
 
 data class ApprovalRequest(val id: String = UUID.randomUUID().toString(), val description: String)
 

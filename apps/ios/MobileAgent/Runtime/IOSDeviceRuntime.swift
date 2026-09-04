@@ -1,4 +1,5 @@
 import Foundation
+import SafariServices
 import UIKit
 
 @MainActor
@@ -101,7 +102,11 @@ final class IOSDeviceRuntime {
             throw AgentRuntimeError.unsupported("UNSUPPORTED_IOS_CAPABILITY: \(capability)")
         }
 
-        let opened = await open(url)
+        let opened = if ["http", "https"].contains(url.scheme?.lowercased()) {
+            presentWebPage(url)
+        } else {
+            await open(url)
+        }
         guard opened else {
             throw AgentRuntimeError.operationFailed("IOS_OPEN_FAILED: \(url.absoluteString)")
         }
@@ -155,15 +160,26 @@ final class IOSDeviceRuntime {
         }
     }
 
+    private func presentWebPage(_ url: URL) -> Bool {
+        guard let presenter = foregroundPresenter() else { return false }
+        presenter.present(SFSafariViewController(url: url), animated: true)
+        return true
+    }
+
     private func presentShareSheet(items: [Any]) throws {
+        guard let presenter = foregroundPresenter() else {
+            throw AgentRuntimeError.operationFailed("NO_FOREGROUND_WINDOW_FOR_SHARE")
+        }
+        presenter.present(UIActivityViewController(activityItems: items, applicationActivities: nil), animated: true)
+    }
+
+    private func foregroundPresenter() -> UIViewController? {
         guard let scene = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
             .first(where: { $0.activationState == .foregroundActive }),
-              let root = scene.windows.first(where: \.isKeyWindow)?.rootViewController else {
-            throw AgentRuntimeError.operationFailed("NO_FOREGROUND_WINDOW_FOR_SHARE")
-        }
+              let root = scene.windows.first(where: \.isKeyWindow)?.rootViewController else { return nil }
         var presenter = root
         while let presented = presenter.presentedViewController { presenter = presented }
-        presenter.present(UIActivityViewController(activityItems: items, applicationActivities: nil), animated: true)
+        return presenter
     }
 }

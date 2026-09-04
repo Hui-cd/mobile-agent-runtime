@@ -3,14 +3,18 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var session = AgentSession.shared
+    @StateObject private var piCoreFixture = PiCoreFixtureRunner.shared
     @State private var apiKey = ""
+    @State private var baseURL = ModelEndpoint.defaultBaseURL
+    @State private var model = ModelEndpoint.defaultModel
+    @State private var editingConfiguration = false
     @State private var prompt = ""
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
                 statusHeader
-                if !session.keyConfigured { keyCard }
+                if !session.keyConfigured || editingConfiguration { keyCard }
                 capabilityCard
                 conversation
                 if let approval = session.approval { approvalCard(approval) }
@@ -23,19 +27,47 @@ struct ContentView: View {
                 if session.keyConfigured {
                     Menu {
                         ShortcutsLink()
-                        Button("删除 API Key", role: .destructive) { session.deleteAPIKey() }
+                        Button("模型设置") {
+                            baseURL = session.endpoint.baseURL.absoluteString
+                            model = session.endpoint.model
+                            editingConfiguration = true
+                        }
+                        if let benchmarkURL = try? BenchmarkRunStore.fileURL(),
+                           FileManager.default.fileExists(atPath: benchmarkURL.path) {
+                            ShareLink(item: benchmarkURL) {
+                                Label("导出 benchmark", systemImage: "square.and.arrow.up")
+                            }
+                        }
+                        Button("删除 API Key", role: .destructive) {
+                            session.deleteAPIKey()
+                            editingConfiguration = true
+                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
                 }
             }
         }
+        .background(PiCoreFixtureHost().frame(width: 1, height: 1).opacity(0.01))
+        .onAppear {
+            baseURL = session.endpoint.baseURL.absoluteString
+            model = session.endpoint.model
+            editingConfiguration = !session.keyConfigured
+        }
+        .onOpenURL(perform: prefillPrompt)
     }
 
     private var statusHeader: some View {
         HStack(spacing: 8) {
-            StatusPill(text: session.keyConfigured ? "Kimi 已连接" : "需要 API Key", ready: session.keyConfigured)
+            StatusPill(text: session.keyConfigured ? "模型已配置" : "需要模型配置", ready: session.keyConfigured)
             StatusPill(text: "iOS 公开能力", ready: true)
+            #if DEBUG
+            StatusPill(
+                text: piCoreFixture.status == .passed ? "Pi core 已验证" :
+                    (piCoreFixture.status == .failed ? "Pi core 验证失败" : "Pi core 验证中"),
+                ready: piCoreFixture.status == .passed
+            )
+            #endif
             Spacer(minLength: 0)
         }
     }
@@ -48,6 +80,18 @@ struct ContentView: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                     .textFieldStyle(.roundedBorder)
+                TextField("Base URL", text: $baseURL)
+                    .textContentType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textFieldStyle(.roundedBorder)
+                TextField("Model ID", text: $model)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textFieldStyle(.roundedBorder)
+                Text("默认使用 Kimi 中国区；兼容 Chat Completions。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 Text("Key 使用 iOS Keychain 保存，不写入源码或 iCloud Keychain。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -55,14 +99,30 @@ struct ContentView: View {
                     Text(error).font(.caption).foregroundStyle(.red)
                 }
                 Button("保存并连接") {
-                    session.saveAPIKey(apiKey)
-                    if session.keyConfigured { apiKey = "" }
+                    session.saveConfiguration(apiKey: apiKey, baseURL: baseURL, model: model)
+                    if session.keyConfigured && session.configurationError == nil {
+                        apiKey = ""
+                        editingConfiguration = false
+                    }
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(
+                    apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                    baseURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                    model.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                )
+                if session.keyConfigured {
+                    Button("取消") {
+                        baseURL = session.endpoint.baseURL.absoluteString
+                        model = session.endpoint.model
+                        session.configurationError = nil
+                        editingConfiguration = false
+                    }
+                    .buttonStyle(.bordered)
+                }
             }
         } label: {
-            Label("连接 Kimi", systemImage: "key.fill")
+            Label("连接模型", systemImage: "key.fill")
         }
     }
 
@@ -145,6 +205,15 @@ struct ContentView: View {
         prompt = ""
         session.start(value)
     }
+
+    private func prefillPrompt(from url: URL) {
+        guard url.scheme?.lowercased() == "mobileagent",
+              url.host?.lowercased() == "compose",
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let value = components.queryItems?.first(where: { $0.name == "prompt" })?.value,
+              !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        prompt = String(value.prefix(16_384))
+    }
 }
 
 private struct StatusPill: View {
@@ -183,4 +252,3 @@ private struct MessageBubble: View {
         }
     }
 }
-

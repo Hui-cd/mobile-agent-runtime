@@ -41,7 +41,10 @@ jobs:
       - name: Set up Android SDK 37
         uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
         with:
-          packages: "platform-tools platforms;android-37"
+          packages: "platform-tools"
+          log-accepted-android-sdk-licenses: false
+      - name: Install Android 17 preview SDK
+        run: sdkmanager "platforms;android-37" "build-tools;37.0.0" --channel=3
       - run: npm ci
       - run: npm run android:test
       - run: npm run android:build

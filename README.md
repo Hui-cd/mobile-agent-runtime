@@ -24,7 +24,7 @@ Android 优先使用 Intent，再使用 Accessibility；每次动作后重新观
 
 ## 在 Android 上运行
 
-要求：Node.js 22+、JDK 17+、Android SDK 37、Android 11+ 手机或模拟器。真机还需开启开发者选项和 USB 调试。
+要求：Node.js 22+、JDK 17+、Android 17 Preview SDK（API 37）、Android 11+ 手机或模拟器。API 37 目前属于 preview channel；可在 Android Studio SDK Manager 中安装。真机还需开启开发者选项和 USB 调试。
 
 ```bash
 git clone https://github.com/Hui-cd/mobile-agent-runtime.git

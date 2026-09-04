@@ -1,7 +1,9 @@
 pluginManagement {
     repositories {
-        maven("https://repo.huaweicloud.com/repository/gradle-plugin/")
-        maven("https://repo.huaweicloud.com/repository/maven/")
+        if (System.getenv("MOBILE_AGENT_USE_HUAWEI_MIRROR") == "1") {
+            maven("https://repo.huaweicloud.com/repository/gradle-plugin/")
+            maven("https://repo.huaweicloud.com/repository/maven/")
+        }
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -11,7 +13,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven("https://repo.huaweicloud.com/repository/maven/")
+        if (System.getenv("MOBILE_AGENT_USE_HUAWEI_MIRROR") == "1") {
+            maven("https://repo.huaweicloud.com/repository/maven/")
+        }
         google()
         mavenCentral()
     }

@@ -34,6 +34,8 @@ npm run android:build
 adb install -r apps/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+中国大陆网络访问 Google/Maven Central 较慢时，可在构建命令前设置 `MOBILE_AGENT_USE_HUAWEI_MIRROR=1` 启用华为云镜像。
+
 首次打开后：
 
 1. 配置一个支持 OpenAI-compatible Chat Completions 与 Tool Calling 的 HTTPS endpoint、模型和 API Key；默认值是 Kimi 中国区 `https://api.moonshot.cn/v1` / `kimi-k3`。

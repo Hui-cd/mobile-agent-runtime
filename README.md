@@ -1,6 +1,8 @@
 # Mobile Agent Runtime
 
-一个直接运行在手机上的开源 Agent Runtime。Agent 循环、会话、工具执行与安全控制位于设备端；模型推理可以使用用户自己的远程 API。
+一个直接运行在 Android 手机上的开源 Agent Runtime。Agent 循环、会话、工具执行与安全控制位于设备端；模型推理可以使用用户自己的远程 API。
+
+当前先稳定通用工具使用，再逐步增量，之后接入飞书、微信等通讯入口。仓库中的 iOS 实现与研究保留作历史工作，不属于当前产品迭代范围。
 
 > 当前状态：**Technical Alpha**。Android 核心链路已在模拟器验证，尚未完成 Android 真机与目标 App 的产品级验证。请勿用于支付、发送、删除等高风险任务。
 
@@ -72,6 +74,11 @@ codex mcp add mobile-device -- node "$(pwd)/dist/server.js"
 
 ## 设计与证据
 
+- [当前进展与目标](PROJECT_STATUS.md)
+- [Android 真机 L1 验收](docs/android-device-smoke.md)
+- [模拟器测试与飞书开发入口](docs/android-channel-development.md)
+- [安卓通用工具契约与验收](docs/android-general-tools.md)
+- [通用性与使用体验审查](docs/android-usability-review.md)
 - [目标与验收边界](docs/goal-v0.md)
 - [Android Agent 设计](docs/android-agent-design.md)
 - [产品与交互设计](docs/android-agent-product-and-interaction.md)

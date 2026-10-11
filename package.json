@@ -24,12 +24,17 @@
     "pi:bundle:browser": "esbuild src/pi/mobile-core-fixture.ts --bundle --platform=browser --format=esm --alias:@mariozechner/pi-ai=./src/pi/pi-ai-mobile-shim.ts --outfile=dist/pi-mobile-core-fixture.js",
     "pi:test:browser": "npm run pi:bundle:browser && node scripts/verify-pi-browser-bundle.mjs",
     "pi:bundle:webview": "node scripts/build-pi-webview.mjs",
-    "benchmark:summary": "node scripts/summarize-benchmark.mjs"
+    "benchmark:summary": "node scripts/summarize-benchmark.mjs",
+    "android:smoke": "node scripts/android-device-smoke.mjs",
+    "android:emulator:smoke": "node scripts/android-device-smoke.mjs --emulator",
+    "channel:feishu:dev": "node --env-file-if-exists=.env.feishu scripts/feishu-emulator.mjs",
+    "android:tools:smoke": "node scripts/android-tool-use.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.74.0",
     "@mariozechner/pi-agent-core": "^0.73.1",
     "@mariozechner/pi-ai": "^0.73.1",
     "@modelcontextprotocol/server": "2.0.0",

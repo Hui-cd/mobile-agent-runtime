@@ -12,10 +12,18 @@ import ai.mobileagent.accessibility.AccessibilityBridge
 import ai.mobileagent.model.ToolExecution
 import kotlinx.coroutines.delay
 import org.json.JSONObject
+import org.json.JSONArray
 
 class AndroidDeviceRuntime(private val context: Context) {
+    suspend fun approvalArguments(name: String, arguments: JSONObject): JSONObject {
+        if (name != "device_act" || arguments.optString("action") !in setOf("click", "long_press")) return arguments
+        requireUiAvailable()
+        val target = awaitAccessibilityService().approvalTarget(arguments)
+        return JSONObject(arguments.toString()).put("target", target)
+    }
+
     suspend fun execute(name: String, arguments: JSONObject): ToolExecution = when (name) {
-        "device_observe" -> observe(arguments.optBoolean("include_screen", false))
+        "device_observe" -> observe(arguments.optBoolean("include_screen", false), arguments.optBoolean("include_apps", false))
         "device_act" -> {
             requireUiAvailable()
             val service = awaitAccessibilityService()
@@ -26,7 +34,7 @@ class AndroidDeviceRuntime(private val context: Context) {
         else -> error("UNKNOWN_TOOL: $name")
     }
 
-    private suspend fun observe(includeScreen: Boolean): ToolExecution {
+    private suspend fun observe(includeScreen: Boolean, includeApps: Boolean = false): ToolExecution {
         val service = awaitAccessibilityService()
         val observation = service.observe(includeScreen)
         val interactive = context.getSystemService(PowerManager::class.java).isInteractive
@@ -35,6 +43,16 @@ class AndroidDeviceRuntime(private val context: Context) {
             .put("device_state", JSONObject()
                 .put("screen_interactive", interactive)
                 .put("device_locked", locked))
+        if (includeApps) {
+            val apps = launchableApps()
+            json.put("apps", JSONArray(apps.take(200).map {
+                JSONObject().put("package", it.packageName).put("label", it.label)
+            })).put("apps_truncated", apps.size > 200)
+        }
+        if (includeScreen) {
+            json.put("screen_attached", observation.screenshotDataUrl != null)
+            if (observation.screenshotDataUrl == null) json.put("screen_error", "SCREENSHOT_UNAVAILABLE")
+        }
         json.optJSONObject("capabilities")
             ?.put("screen_interactive", interactive)
             ?.put("device_locked", locked)
@@ -96,28 +114,15 @@ class AndroidDeviceRuntime(private val context: Context) {
 
     private fun resolveLaunchPackage(params: JSONObject): String {
         val requested = params.optString("package").ifBlank { params.optString("app") }.trim()
-        if (requested.isBlank()) error("OPEN_APP_TARGET_MISSING")
-        val normalized = requested.lowercase()
-            .removeSuffix(" app")
-            .removeSuffix("应用")
-            .trim()
-        val candidates = buildList {
-            add(requested)
-            APP_ALIASES.entries
-                .filter { (aliases, _) -> normalized in aliases }
-                .flatMapTo(this) { it.value }
-            val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-            context.packageManager.queryIntentActivities(launcherIntent, PackageManager.MATCH_ALL)
-                .filter { info ->
-                    val label = info.loadLabel(context.packageManager).toString().lowercase()
-                    label == normalized || label.contains(normalized) || normalized.contains(label)
-                }
-                .mapTo(this) { it.activityInfo.packageName }
-        }.distinct()
-        return candidates.firstOrNull { packageName ->
-            runCatching { context.packageManager.getApplicationInfo(packageName, 0) }.isSuccess
-        } ?: error("APP_NOT_INSTALLED: $requested")
+        return AppCatalog.resolve(launchableApps(), requested)
     }
+
+    private fun launchableApps(): List<LaunchableApp> = context.packageManager
+        .queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL)
+        .filter { it.activityInfo.enabled && it.activityInfo.applicationInfo.enabled }
+        .map { LaunchableApp(it.activityInfo.packageName, it.loadLabel(context.packageManager).toString()) }
+        .distinctBy { it.packageName }
+        .sortedBy { it.label.lowercase() }
 
     private fun settingsIntent(params: JSONObject): Intent {
         val action = when (params.optString("page", "main")) {
@@ -134,15 +139,4 @@ class AndroidDeviceRuntime(private val context: Context) {
         }
     }
 
-    companion object {
-        private val APP_ALIASES = mapOf(
-            setOf("clock", "deskclock", "时钟", "com.android.deskclock", "com.google.android.deskclock") to
-                listOf("com.google.android.deskclock", "com.android.deskclock"),
-            setOf("meituan", "美团") to listOf("com.sankuai.meituan"),
-            setOf("xiaohongshu", "rednote", "小红书") to listOf("com.xingin.xhs"),
-            setOf("douyin", "抖音") to listOf("com.ss.android.ugc.aweme"),
-            setOf("wechat", "weixin", "微信") to listOf("com.tencent.mm"),
-            setOf("chrome", "google chrome", "谷歌浏览器", "com.android.chrome") to listOf("com.android.chrome"),
-        )
-    }
 }

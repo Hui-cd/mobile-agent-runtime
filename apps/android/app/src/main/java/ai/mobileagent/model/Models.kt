@@ -15,7 +15,13 @@ data class ChatMessage(
 
 enum class AgentStatus { IDLE, THINKING, ACTING, WAITING_APPROVAL, COMPLETE, ERROR, CANCELLED }
 
-data class ApprovalRequest(val id: String = UUID.randomUUID().toString(), val description: String)
+data class ApprovalRequest(
+    val id: String = UUID.randomUUID().toString(),
+    val action: String = "",
+    val target: String = "",
+    val consequence: String = "",
+    val description: String = "",
+)
 
 data class AgentState(
     val messages: List<ChatMessage> = emptyList(),
@@ -38,6 +44,12 @@ data class UiNodeSnapshot(
     val scrollable: Boolean,
     val enabled: Boolean,
     val bounds: IntArray,
+    val visible: Boolean = true,
+    val selected: Boolean = false,
+    val checkable: Boolean = false,
+    val checked: Boolean = false,
+    val focused: Boolean = false,
+    val password: Boolean = false,
 ) {
     fun toJson() = JSONObject().apply {
         put("index", index)
@@ -50,6 +62,12 @@ data class UiNodeSnapshot(
         put("editable", editable)
         put("scrollable", scrollable)
         put("enabled", enabled)
+        put("visible", visible)
+        put("selected", selected)
+        put("checkable", checkable)
+        put("checked", checked)
+        put("focused", focused)
+        put("password", password)
         put("bounds", JSONArray(bounds.toList()))
         put("center", JSONObject().put("x", (bounds[0] + bounds[2]) / 2).put("y", (bounds[1] + bounds[3]) / 2))
     }
@@ -60,9 +78,11 @@ data class Observation(
     val className: String?,
     val nodes: List<UiNodeSnapshot>,
     val screenshotDataUrl: String? = null,
+    val observationId: String = UUID.randomUUID().toString(),
 ) {
     fun toJson() = JSONObject().apply {
         put("observed_at", System.currentTimeMillis())
+        put("observation_id", observationId)
         put("current_app", packageName ?: JSONObject.NULL)
         put("current_activity", className ?: JSONObject.NULL)
         put("ui_tree", JSONArray(nodes.map { it.toJson() }))

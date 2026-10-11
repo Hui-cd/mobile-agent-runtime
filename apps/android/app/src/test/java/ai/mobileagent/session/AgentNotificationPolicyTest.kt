@@ -41,4 +41,8 @@ class AgentNotificationPolicyTest {
             assertFalse(content.showStop)
         }
     }
+
+    @Test fun `a returned answer is not automatically labeled task success`() {
+        assertEquals("已返回结果", AgentNotificationPolicy.content(AgentState(status = AgentStatus.COMPLETE)).title)
+    }
 }

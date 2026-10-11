@@ -24,10 +24,9 @@ class OpenAICompatibleClient(
         activeConnection?.disconnect()
     }
 
-    suspend fun complete(messages: JSONArray, tools: JSONArray): JSONObject = withContext(Dispatchers.IO) {
+    suspend fun complete(messages: JSONArray, tools: JSONArray, benchmarkTaskId: String? = null): JSONObject = withContext(Dispatchers.IO) {
         DebugModelDelay.consume(context)
         val startedAt = System.currentTimeMillis()
-        val benchmarkTaskId = benchmarkTaskId(messages)
         val successfulToolCalls = successfulToolCalls(messages)
         val responseFormat = benchmarkTaskId
             ?.let { taskId -> BenchmarkResponsePolicy.choose(taskId, successfulToolCalls)?.let { taskId to it } }
@@ -65,7 +64,7 @@ class OpenAICompatibleClient(
             val json = JSONObject(response)
             if (connection.responseCode !in 200..299) {
                 val message = json.optJSONObject("error")?.optString("message") ?: "HTTP ${connection.responseCode}"
-                error("MODEL_API_ERROR: $message")
+                error("MODEL_API_ERROR: HTTP ${connection.responseCode}: $message")
             }
             json
         } catch (error: Throwable) {
@@ -79,12 +78,6 @@ class OpenAICompatibleClient(
             connection.disconnect()
             if (activeConnection === connection) activeConnection = null
         }
-    }
-
-    private fun benchmarkTaskId(messages: JSONArray): String? = (0 until messages.length()).firstNotNullOfOrNull { index ->
-        val message = messages.optJSONObject(index) ?: return@firstNotNullOfOrNull null
-        if (message.optString("role") != "user") return@firstNotNullOfOrNull null
-        BENCHMARK_TASK.find(messageText(message.opt("content")))?.groupValues?.get(1)
     }
 
     private fun messageText(content: Any?): String = when (content) {
@@ -161,6 +154,5 @@ class OpenAICompatibleClient(
     }
 
     companion object {
-        private val BENCHMARK_TASK = Regex("^\\[BENCH:([A-Z][0-9]+)]")
     }
 }

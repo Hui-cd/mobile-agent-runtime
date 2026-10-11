@@ -2,7 +2,9 @@
 
 ## 目标
 
-让 Pi Agent 的核心 agent/session/tool loop 直接运行在用户自己的 Android 与 iPhone 上，通过统一的 `device_observe / device_act / device_invoke` 在本机执行真实 App 任务，完成搜索、浏览、滚动、详情读取和结构化信息采集，并用可重复 benchmark 验证结果。
+让 Pi Agent 的核心 agent/session/tool loop 直接运行在用户自己的 Android 手机上，通过统一的 `device_observe / device_act / device_invoke` 在本机执行真实 App 任务，完成搜索、浏览、滚动、详情读取和结构化信息采集，并用可重复 benchmark 验证结果。
+
+2026-10-11 范围确认：当前只推进 Android。先把通用工具闭环做稳，再按验证结果逐步增量。已有 iOS 代码与研究记录保留，不属于当前产品迭代或验收范围。
 
 模型推理可以远程；产品运行不能依赖 Mac、PC 或云手机。
 
@@ -17,9 +19,18 @@
 ## v0 范围
 
 - 只做只读或低风险任务：搜索、浏览、进入详情、返回、提取。
-- Android 与 iOS 使用同一任务表达和结果格式，但允许能力不对称。
-- App 首批覆盖美团、小红书、抖音、微信；微信只使用测试账号读取测试会话，不自动发送。
+- 优先验证 Android 的应用发现、观察、目标选择、点击、输入、滚动、返回、停止和结果核对；按能力验证，不维护每个 App 的固定操作流程。
+- 系统应用基线通过后，选择一个第三方 App 的只读任务验证迁移；再根据实际缺口扩展，不同时铺开多个 App 适配。
 - 高风险动作继续要求用户确认，不纳入 v0 成功率。
+
+## 增量顺序
+
+1. 通用语义工具与执行闭环：用不同页面和 App 验证同一套工具。
+2. 按失败证据补充动态页面处理、视觉能力或其他通用缺口；每次增量保留已有基线。
+3. 验证真实 Android 设备上的权限、后台、锁屏和网络恢复。
+4. 接入飞书，再评估微信；通讯层只传递任务、进度、结果和控制请求，复用安卓执行能力。
+
+当前可使用模拟器推进前两项；模拟器通过不替代真机验收。每次只增加一个可验证的能力，避免为了远期场景提前扩展框架。
 
 ## 明确不做
 
@@ -32,13 +43,13 @@
 
 ### G0：基线真实
 
-- 当前仓库所有构建与测试通过。
+- 当前 Android 与共享 Agent/tool 代码的构建及相关测试通过。
 - README、能力矩阵和实现一致。
 - benchmark schema、任务定义和证据要求固定。
 
 ### G1：Pi 移动嵌入
 
-- 在 Android 与 iOS 模拟器分别运行一个 `pi-agent-core` fixture。
+- 在 Android 模拟器运行一个 `pi-agent-core` fixture。
 - fixture 至少完成：prompt → 模型 stub → tool call → native tool bridge → tool result → final。
 - session 可持久化、取消，App 切后台时行为有实测记录。
 
@@ -48,12 +59,12 @@
 
 - Android 通用路径：Accessibility + Intent，明确标记目标 App 会占用前台。
 - Android 原生后台路径：在具备 OEM Computer Control 能力的设备上验证；无专用权限时不得声称支持。
-- iOS 公共路径：App Intent、Shortcut、Universal Link、URL Scheme。
-- iOS 研究路径：独立评估 LiveContainer 类侧载容器；与公开分发产品隔离。
+
+历史 iOS 公共路径与研究路径保留作记录，不作为本阶段交付门槛。
 
 ### G3：真实 App benchmark
 
-- 每个已支持的 App/平台组合连续运行 10 次。
+- 每个已支持的 Android App/任务组合连续运行 10 次。
 - 输出成功率、步骤数、耗时、模型调用数、人工接管、崩溃、登录丢失、观察失败和前台干扰。
 - 只有达到 [benchmark-v0.md](benchmark-v0.md) 的证据标准才计为成功。
 

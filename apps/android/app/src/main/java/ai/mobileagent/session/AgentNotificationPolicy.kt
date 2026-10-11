@@ -27,7 +27,7 @@ internal object AgentNotificationPolicy {
             attention = true,
         )
         AgentStatus.COMPLETE -> AgentNotificationContent(
-            title = "任务完成",
+            title = "已返回结果",
             text = "点击查看结果",
             ongoing = false,
             showStop = false,

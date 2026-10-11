@@ -12,9 +12,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import ai.mobileagent.BuildConfig
+import ai.mobileagent.agent.ApprovalPolicy
 import ai.mobileagent.agent.OpenAICompatibleClient
 import ai.mobileagent.benchmark.LoginState
 import ai.mobileagent.benchmark.LoginStateTracker
+import ai.mobileagent.model.ApprovalRequest
 import ai.mobileagent.model.ToolExecution
 import ai.mobileagent.runtime.AndroidDeviceRuntime
 import androidx.webkit.WebMessageCompat
@@ -45,7 +47,7 @@ data class PiCoreFixtureState(
     enum class Status { IDLE, RUNNING, PASSED, FAILED }
 }
 
-data class PiAgentResult(val finalText: String, val messagesJson: String)
+data class PiAgentResult(val finalText: String, val messagesJson: String, val evidenceJson: String? = null)
 
 class PiRunMetrics {
     private val startedElapsedMs = SystemClock.elapsedRealtime()
@@ -172,7 +174,7 @@ object PiCoreFixtureRunner {
         val client: OpenAICompatibleClient,
         val runtime: AndroidDeviceRuntime,
         val onStep: suspend (String) -> Unit,
-        val requestApproval: suspend (String) -> Boolean,
+        val requestApproval: suspend (ApprovalRequest) -> Boolean,
         val result: CompletableDeferred<PiAgentResult>,
         val metrics: PiRunMetrics,
         var nativeRequestJob: Job? = null,
@@ -279,7 +281,7 @@ object PiCoreFixtureRunner {
         messagesJson: String?,
         metrics: PiRunMetrics,
         onStep: suspend (String) -> Unit,
-        requestApproval: suspend (String) -> Boolean,
+        requestApproval: suspend (ApprovalRequest) -> Boolean,
     ): PiAgentResult {
         var attempts = 0
         while (_state.value.status != PiCoreFixtureState.Status.PASSED && attempts++ < 100) {
@@ -347,6 +349,7 @@ object PiCoreFixtureRunner {
                     val response = run.client.complete(
                         request.optJSONObject("params")?.optJSONArray("messages") ?: JSONArray(),
                         request.optJSONObject("params")?.optJSONArray("tools") ?: JSONArray(),
+                        request.optJSONObject("params")?.opt("benchmark_task_id") as? String,
                     )
                     run.metrics.failureStage = null
                     successResponse(id, response)
@@ -379,11 +382,13 @@ object PiCoreFixtureRunner {
         val label = stepLabel(name, arguments)
         run.metrics.failureStage = "tool:$name"
         run.onStep(label)
-        val needsApproval = requiresApproval(name, arguments)
-        if (needsApproval) run.metrics.approvalInteractions += 1
-        val execution = if (needsApproval && !run.requestApproval(label)) {
-            ToolExecution(JSONObject().put("error", "USER_DENIED").toString())
-        } else runCatching { run.runtime.execute(name, arguments) }
+        val execution = runCatching {
+            val needsApproval = ApprovalPolicy.approvalFor(name, run.runtime.approvalArguments(name, arguments))
+            if (needsApproval != null) run.metrics.approvalInteractions += 1
+            if (needsApproval != null && !run.requestApproval(needsApproval)) {
+                ToolExecution(JSONObject().put("error", "USER_DENIED").toString())
+            } else run.runtime.execute(name, arguments)
+        }
             .getOrElse { ToolExecution(JSONObject().put("error", it.message ?: "TOOL_FAILED").toString()) }
         run.metrics.recordTool(name, arguments, execution)
         run.metrics.failureStage = null
@@ -418,7 +423,8 @@ object PiCoreFixtureRunner {
             failedToolResults.count { it.optString("toolName") != "device_observe" },
         )
         run.metrics.finishForegroundInterval()
-        run.result.complete(PiAgentResult(result.optString("finalText", "任务已完成。"), messages.toString()))
+        val evidence = result.optJSONObject("evidence")?.toString()
+        run.result.complete(PiAgentResult(result.optString("finalText", "任务已完成。"), messages.toString(), evidence))
         Log.i("MobileAgentPi", "Pi prompt completed; messages=${messages.length()}")
         return successResponse(id, JSONObject().put("accepted", true))
     }
@@ -459,18 +465,7 @@ object PiCoreFixtureRunner {
         return successResponse(id, JSONObject().put("accepted", true))
     }
 
-    private fun stepLabel(name: String, args: JSONObject): String = when (name) {
-        "device_observe" -> "正在观察当前界面"
-        "device_act" -> "正在执行 ${args.optString("action")}${args.optJSONObject("target")?.optString("text")?.takeIf(String::isNotBlank)?.let { "：$it" } ?: ""}"
-        "device_invoke" -> "正在调用 ${args.optString("capability")}"
-        else -> "正在执行 $name"
-    }
-
-    private fun requiresApproval(name: String, args: JSONObject): Boolean {
-        if (name == "device_invoke" && args.optString("capability") in setOf("dial", "share")) return true
-        val text = args.optJSONObject("target")?.optString("text").orEmpty()
-        return listOf("支付", "购买", "下单", "发送", "删除", "提交订单", "确认付款").any(text::contains)
-    }
+    private fun stepLabel(name: String, args: JSONObject): String = ai.mobileagent.session.UserGuidance.step(name, args)
 
     private fun successResponse(id: String, result: Any): JSONObject = JSONObject()
         .put("id", id)

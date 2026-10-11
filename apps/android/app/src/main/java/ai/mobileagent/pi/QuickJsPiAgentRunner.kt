@@ -2,7 +2,9 @@ package ai.mobileagent.pi
 
 import android.content.Context
 import android.util.Log
+import ai.mobileagent.agent.ApprovalPolicy
 import ai.mobileagent.agent.OpenAICompatibleClient
+import ai.mobileagent.model.ApprovalRequest
 import ai.mobileagent.model.ToolExecution
 import ai.mobileagent.runtime.AndroidDeviceRuntime
 import com.dokar.quickjs.QuickJs
@@ -30,7 +32,7 @@ object QuickJsPiAgentRunner {
         val client: OpenAICompatibleClient,
         val runtime: AndroidDeviceRuntime,
         val onStep: suspend (String) -> Unit,
-        val requestApproval: suspend (String) -> Boolean,
+        val requestApproval: suspend (ApprovalRequest) -> Boolean,
         val metrics: PiRunMetrics,
         var nativeRequestJob: Job? = null,
         var quickJs: QuickJs? = null,
@@ -47,7 +49,7 @@ object QuickJsPiAgentRunner {
         messagesJson: String?,
         metrics: PiRunMetrics,
         onStep: suspend (String) -> Unit,
-        requestApproval: suspend (String) -> Boolean,
+        requestApproval: suspend (ApprovalRequest) -> Boolean,
     ): PiAgentResult {
         check(activeRun == null) { "PI_AGENT_ALREADY_RUNNING" }
         val run = ActiveRun(client, runtime, onStep, requestApproval, metrics)
@@ -134,6 +136,7 @@ object QuickJsPiAgentRunner {
             val response = run.client.complete(
                 params.optJSONArray("messages") ?: JSONArray(),
                 params.optJSONArray("tools") ?: JSONArray(),
+                params.opt("benchmark_task_id") as? String,
             )
             run.metrics.failureStage = null
             successResponse(id, response)
@@ -153,11 +156,13 @@ object QuickJsPiAgentRunner {
         val label = stepLabel(name, arguments)
         run.metrics.failureStage = "tool:$name"
         run.onStep(label)
-        val needsApproval = requiresApproval(name, arguments)
-        if (needsApproval) run.metrics.approvalInteractions += 1
-        val execution = if (needsApproval && !run.requestApproval(label)) {
-            ToolExecution(JSONObject().put("error", "USER_DENIED").toString())
-        } else runCatching { run.runtime.execute(name, arguments) }
+        val execution = runCatching {
+            val needsApproval = ApprovalPolicy.approvalFor(name, run.runtime.approvalArguments(name, arguments))
+            if (needsApproval != null) run.metrics.approvalInteractions += 1
+            if (needsApproval != null && !run.requestApproval(needsApproval)) {
+                ToolExecution(JSONObject().put("error", "USER_DENIED").toString())
+            } else run.runtime.execute(name, arguments)
+        }
             .getOrElse { ToolExecution(JSONObject().put("error", it.message ?: "TOOL_FAILED").toString()) }
         run.metrics.recordTool(name, arguments, execution)
         run.metrics.failureStage = null
@@ -189,21 +194,11 @@ object QuickJsPiAgentRunner {
         run.metrics.finishForegroundInterval()
         run.metrics.failureStage = null
         Log.i(TAG, "Pi prompt completed; messages=${messages.length()}")
-        return PiAgentResult(result.optString("finalText", "任务已完成。"), messages.toString())
+        val evidence = result.optJSONObject("evidence")?.toString()
+        return PiAgentResult(result.optString("finalText", "任务已完成。"), messages.toString(), evidence)
     }
 
-    private fun stepLabel(name: String, args: JSONObject): String = when (name) {
-        "device_observe" -> "正在观察当前界面"
-        "device_act" -> "正在执行 ${args.optString("action")}${args.optJSONObject("target")?.optString("text")?.takeIf(String::isNotBlank)?.let { "：$it" } ?: ""}"
-        "device_invoke" -> "正在调用 ${args.optString("capability")}"
-        else -> "正在执行 $name"
-    }
-
-    private fun requiresApproval(name: String, args: JSONObject): Boolean {
-        if (name == "device_invoke" && args.optString("capability") in setOf("dial", "share")) return true
-        val text = args.optJSONObject("target")?.optString("text").orEmpty()
-        return listOf("支付", "购买", "下单", "发送", "删除", "提交订单", "确认付款").any(text::contains)
-    }
+    private fun stepLabel(name: String, args: JSONObject): String = ai.mobileagent.session.UserGuidance.step(name, args)
 
     private fun successResponse(id: String, result: Any): JSONObject = JSONObject()
         .put("id", id)

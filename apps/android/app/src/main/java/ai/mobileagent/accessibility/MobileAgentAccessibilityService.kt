@@ -16,11 +16,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.ByteArrayOutputStream
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class MobileAgentAccessibilityService : AccessibilityService() {
     private var lastExternalSnapshotAt = 0L
+    private var lastIssuedObservation: Observation? = null
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -64,6 +67,7 @@ class MobileAgentAccessibilityService : AccessibilityService() {
             nodes = nodes,
             screenshotDataUrl = if (includeScreen) captureScreenshot() else null,
         ).also { observation ->
+            lastIssuedObservation = observation
             if (observation.packageName != null && observation.packageName != packageName) {
                 AccessibilityBridge.lastExternalObservation = observation.copy(screenshotDataUrl = null)
             }
@@ -72,11 +76,16 @@ class MobileAgentAccessibilityService : AccessibilityService() {
 
     private fun flatten(node: AccessibilityNodeInfo, output: MutableList<UiNodeSnapshot>, max: Int) {
         if (output.size >= max) return
+        output += snapshot(node, output.size)
+        for (index in 0 until node.childCount) node.getChild(index)?.let { flatten(it, output, max) }
+    }
+
+    private fun snapshot(node: AccessibilityNodeInfo, index: Int): UiNodeSnapshot {
         val rect = Rect().also(node::getBoundsInScreen)
         val className = node.className?.toString().orEmpty()
-        output += UiNodeSnapshot(
-            index = output.size,
-            text = node.text?.toString()?.takeIf(String::isNotBlank),
+        return UiNodeSnapshot(
+            index = index,
+            text = if (node.isPassword) null else node.text?.toString()?.takeIf(String::isNotBlank),
             contentDescription = node.contentDescription?.toString()?.takeIf(String::isNotBlank),
             resourceId = node.viewIdResourceName,
             role = role(className, node),
@@ -86,8 +95,13 @@ class MobileAgentAccessibilityService : AccessibilityService() {
             scrollable = node.isScrollable,
             enabled = node.isEnabled,
             bounds = intArrayOf(rect.left, rect.top, rect.right, rect.bottom),
+            visible = node.isVisibleToUser,
+            selected = node.isSelected,
+            checkable = node.isCheckable,
+            checked = node.isChecked,
+            focused = node.isFocused,
+            password = node.isPassword,
         )
-        for (index in 0 until node.childCount) node.getChild(index)?.let { flatten(it, output, max) }
     }
 
     private fun role(className: String, node: AccessibilityNodeInfo): String = when {
@@ -104,7 +118,7 @@ class MobileAgentAccessibilityService : AccessibilityService() {
     private fun allNodes(): List<AccessibilityNodeInfo> {
         val result = mutableListOf<AccessibilityNodeInfo>()
         fun visit(node: AccessibilityNodeInfo?) {
-            if (node == null || result.size >= 1000) return
+            if (node == null || result.size >= 300) return
             result += node
             for (index in 0 until node.childCount) visit(node.getChild(index))
         }
@@ -112,28 +126,56 @@ class MobileAgentAccessibilityService : AccessibilityService() {
         return result
     }
 
-    private fun matches(node: AccessibilityNodeInfo, target: org.json.JSONObject): Boolean {
-        if (target.has("text") && node.text?.toString() != target.optString("text")) return false
-        if (target.has("content_description") && node.contentDescription?.toString() != target.optString("content_description")) return false
-        if (target.has("resource_id") && node.viewIdResourceName != target.optString("resource_id")) return false
-        if (target.has("role") && role(node.className?.toString().orEmpty(), node) != target.optString("role")) return false
-        return true
+    private fun actionNodes(arguments: org.json.JSONObject): List<AccessibilityNodeInfo> {
+        val target = arguments.optJSONObject("target") ?: org.json.JSONObject()
+        val nodes = allNodes()
+        val snapshots = nodes.mapIndexed { index, node -> snapshot(node, index) }
+        val expectedId = arguments.optString("observation_id").takeIf(String::isNotBlank)
+        if (target.has("index")) check(expectedId != null) {
+            "OBSERVATION_REQUIRED: index selectors require observation_id from device_observe"
+        }
+        if (expectedId != null) check(nodes.firstOrNull()?.packageName?.toString() == lastIssuedObservation?.packageName) {
+            "STALE_OBSERVATION: foreground app changed; observe again"
+        }
+        UiTargetResolver.validateObservation(expectedId, lastIssuedObservation?.observationId, lastIssuedObservation?.nodes, snapshots)
+        return nodes
     }
 
-    private fun findNode(target: org.json.JSONObject): AccessibilityNodeInfo? {
-        val nodes = allNodes()
-        if (target.has("index")) return nodes.getOrNull(target.optInt("index"))
-        return nodes.firstOrNull { matches(it, target) && it.isEnabled }
+    /** Trusted labels for policy come from the actual target, never model-provided descriptions. */
+    suspend fun approvalTarget(arguments: org.json.JSONObject): org.json.JSONObject = withContext(Dispatchers.Main) {
+        val nodes = actionNodes(arguments)
+        val snapshots = nodes.mapIndexed { index, node -> snapshot(node, index) }
+        val selected = UiTargetResolver.resolve(snapshots, arguments.optJSONObject("target") ?: org.json.JSONObject(), arguments.getString("action"))
+        val labels = mutableListOf<String>()
+        fun visit(node: AccessibilityNodeInfo, depth: Int = 0) {
+            if (depth > 6 || labels.size >= 20 || !node.isVisibleToUser || node.isPassword) return
+            node.text?.toString()?.takeIf(String::isNotBlank)?.let(labels::add)
+            node.contentDescription?.toString()?.takeIf(String::isNotBlank)?.let(labels::add)
+            for (index in 0 until node.childCount) node.getChild(index)?.let { visit(it, depth + 1) }
+        }
+        var receiver: AccessibilityNodeInfo = nodes[selected.index]
+        if (arguments.getString("action") == "click") {
+            while (!receiver.isClickable && receiver.parent != null) receiver = receiver.parent
+        }
+        visit(receiver)
+        org.json.JSONObject().apply {
+            if (labels.isNotEmpty()) put("text", labels.distinct().joinToString(" "))
+            receiver.viewIdResourceName?.let { put("resource_id", it) }
+        }
     }
 
     suspend fun act(arguments: org.json.JSONObject): Observation = withContext(Dispatchers.Main) {
         val action = arguments.getString("action")
         val target = arguments.optJSONObject("target") ?: org.json.JSONObject()
+        val nodes = actionNodes(arguments)
+        val snapshots = nodes.mapIndexed { index, node -> snapshot(node, index) }
+        fun findNode(selector: org.json.JSONObject): AccessibilityNodeInfo =
+            nodes[UiTargetResolver.resolve(snapshots, selector, action).index]
         when (action) {
-            "back" -> performGlobalAction(GLOBAL_ACTION_BACK)
-            "home" -> performGlobalAction(GLOBAL_ACTION_HOME)
+            "back" -> check(performGlobalAction(GLOBAL_ACTION_BACK)) { "GLOBAL_ACTION_REJECTED: back" }
+            "home" -> check(performGlobalAction(GLOBAL_ACTION_HOME)) { "GLOBAL_ACTION_REJECTED: home" }
             "click" -> {
-                val node = findNode(target) ?: error("TARGET_NOT_FOUND")
+                val node = findNode(target)
                 var current: AccessibilityNodeInfo? = node
                 var clicked = false
                 while (current != null && !clicked) {
@@ -142,10 +184,9 @@ class MobileAgentAccessibilityService : AccessibilityService() {
                 }
                 if (!clicked) gestureAt(node, 100)
             }
-            "long_press" -> gestureAt(findNode(target) ?: error("TARGET_NOT_FOUND"), arguments.optLong("duration_ms", 700))
+            "long_press" -> gestureAt(findNode(target), arguments.optLong("duration_ms", 700))
             "input" -> {
                 val node = findNode(if (target.length() == 0) org.json.JSONObject().put("role", "text_field") else target)
-                    ?: error("TARGET_NOT_FOUND")
                 node.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
                 val bundle = Bundle().apply {
                     putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, arguments.getString("value"))
@@ -153,8 +194,9 @@ class MobileAgentAccessibilityService : AccessibilityService() {
                 check(node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, bundle)) { "INPUT_FAILED" }
             }
             "scroll" -> {
-                val node = findNode(target.takeIf { it.length() > 0 } ?: org.json.JSONObject().put("role", "scroll_view"))
-                    ?: allNodes().firstOrNull { it.isScrollable } ?: error("SCROLL_TARGET_NOT_FOUND")
+                val node = findNode(target.takeIf { it.length() > 0 } ?: org.json.JSONObject().put("index",
+                    snapshots.singleOrNull { it.scrollable && it.enabled && it.visible }?.index
+                        ?: error("SCROLL_TARGET_AMBIGUOUS: specify the visible scroll container")))
                 val direction = arguments.optString("direction", "up")
                 val code = if (direction == "up" || direction == "left") AccessibilityNodeInfo.ACTION_SCROLL_FORWARD else AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD
                 if (!node.performAction(code)) {
@@ -190,18 +232,26 @@ class MobileAgentAccessibilityService : AccessibilityService() {
         dispatch(path, duration)
     }
 
-    private suspend fun dispatch(path: Path, duration: Long) = suspendCancellableCoroutine { continuation ->
-        val gesture = GestureDescription.Builder().addStroke(GestureDescription.StrokeDescription(path, 0, duration)).build()
-        val accepted = dispatchGesture(gesture, object : GestureResultCallback() {
-            override fun onCompleted(gestureDescription: GestureDescription?) { if (continuation.isActive) continuation.resume(Unit) }
-            override fun onCancelled(gestureDescription: GestureDescription?) { if (continuation.isActive) continuation.resume(Unit) }
-        }, null)
-        if (!accepted && continuation.isActive) continuation.resume(Unit)
+    private suspend fun dispatch(path: Path, duration: Long) {
+        require(duration in 1..5_000) { "DURATION_INVALID: use 1..5000 ms" }
+        withTimeoutOrNull(duration + 2_000) {
+            suspendCancellableCoroutine<Unit> { continuation ->
+                val gesture = GestureDescription.Builder().addStroke(GestureDescription.StrokeDescription(path, 0, duration)).build()
+                val accepted = dispatchGesture(gesture, object : GestureResultCallback() {
+                    override fun onCompleted(gestureDescription: GestureDescription?) { if (continuation.isActive) continuation.resume(Unit) }
+                    override fun onCancelled(gestureDescription: GestureDescription?) {
+                        if (continuation.isActive) continuation.resumeWithException(IllegalStateException("GESTURE_CANCELLED"))
+                    }
+                }, null)
+                if (!accepted && continuation.isActive) continuation.resumeWithException(IllegalStateException("GESTURE_REJECTED"))
+            }
+        } ?: error("GESTURE_TIMEOUT")
     }
 
     private suspend fun captureScreenshot(): String? = suspendCancellableCoroutine { continuation ->
         takeScreenshot(Display.DEFAULT_DISPLAY, mainExecutor, object : TakeScreenshotCallback {
             override fun onSuccess(result: ScreenshotResult) {
+                if (!continuation.isActive) { result.hardwareBuffer.close(); return }
                 val bitmap = Bitmap.wrapHardwareBuffer(result.hardwareBuffer, result.colorSpace)?.copy(Bitmap.Config.ARGB_8888, false)
                 result.hardwareBuffer.close()
                 if (bitmap == null) { continuation.resume(null); return }
@@ -210,7 +260,7 @@ class MobileAgentAccessibilityService : AccessibilityService() {
                 val bytes = ByteArrayOutputStream().also { output.compress(Bitmap.CompressFormat.JPEG, 70, it) }.toByteArray()
                 continuation.resume("data:image/jpeg;base64," + android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP))
             }
-            override fun onFailure(errorCode: Int) { continuation.resume(null) }
+            override fun onFailure(errorCode: Int) { if (continuation.isActive) continuation.resume(null) }
         })
     }
 }

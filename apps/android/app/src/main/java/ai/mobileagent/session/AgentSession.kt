@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.content.ContextCompat
+import ai.mobileagent.accessibility.AccessibilityBridge
+import android.app.KeyguardManager
+import android.os.PowerManager
 import ai.mobileagent.agent.ModelEndpointStore
 import ai.mobileagent.agent.OpenAICompatibleClient
 import ai.mobileagent.benchmark.BenchmarkRunStore
@@ -24,6 +27,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 object AgentSession {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -31,16 +35,23 @@ object AgentSession {
     val state = _state.asStateFlow()
     private var job: Job? = null
     private var approvalResult: CompletableDeferred<Boolean>? = null
+    // Context follows the visible conversation. Never silently restore a hidden old task.
+    private var sessionMessagesJson: String? = null
 
-    fun start(context: Context, prompt: String) {
-        if (_state.value.running || prompt.isBlank()) return
+    fun start(context: Context, prompt: String, freshSession: Boolean = false): Boolean {
+        if (_state.value.running || prompt.isBlank()) return false
         val appContext = context.applicationContext
         val key = ApiKeyStore(appContext).load()
-        if (key.isNullOrBlank()) {
-            add(MessageRole.ERROR, "请先保存模型 API Key。")
-            return
+        val notReady = UserGuidance.readiness(!key.isNullOrBlank(), AccessibilityBridge.isEnabled(appContext), AgentForegroundService.notificationsAvailable(appContext))
+        if (notReady != null) return reject(notReady)
+        if (appContext.getSystemService(KeyguardManager::class.java).isDeviceLocked) return reject(UserGuidance.error("DEVICE_LOCKED"))
+        if (!appContext.getSystemService(PowerManager::class.java).isInteractive) return reject(UserGuidance.error("SCREEN_NOT_INTERACTIVE"))
+        try {
+            ContextCompat.startForegroundService(appContext, Intent(appContext, AgentForegroundService::class.java))
+        } catch (error: Exception) {
+            Log.e("MobileAgent", "Unable to start task service", error)
+            return reject("暂时无法启动任务。请返回 Mobile Agent，检查通知权限后重试。")
         }
-        ContextCompat.startForegroundService(appContext, Intent(appContext, AgentForegroundService::class.java))
         val metrics = PiRunMetrics()
         val endpoint = ModelEndpointStore(appContext).load()
         val benchmarkRun = BenchmarkRunStore.start(appContext, prompt, metrics, endpoint.model, endpoint.host)
@@ -55,26 +66,33 @@ object AgentSession {
                 val transcriptStore = appContext.getSharedPreferences("pi-agent-session", Context.MODE_PRIVATE)
                 val result = QuickJsPiAgentRunner.run(
                     context = appContext,
-                    client = OpenAICompatibleClient(key, endpoint, appContext),
+                    client = OpenAICompatibleClient(key!!, endpoint, appContext),
                     runtime = AndroidDeviceRuntime(appContext),
                     prompt = runtimePrompt,
-                    messagesJson = if (benchmarkMode) null else transcriptStore.getString("messages", null),
+                    messagesJson = if (benchmarkMode || freshSession) null else sessionMessagesJson,
                     metrics = metrics,
                     onStep = { step ->
                         _state.value = _state.value.copy(status = AgentStatus.ACTING, currentStep = step)
-                        add(MessageRole.STATUS, step)
                     },
                     requestApproval = { description -> requestApproval(description) },
                 )
                 val answer = result.finalText
-                if (!benchmarkMode) transcriptStore.edit().putString("messages", result.messagesJson).apply()
-                runCatching { benchmarkRun.complete(answer) }
+                if (freshSession) {
+                    if (ai.mobileagent.BuildConfig.DEBUG) transcriptStore.edit()
+                        .putString("debug-last-prompt", prompt)
+                        .putString("debug-last-messages", result.messagesJson).apply()
+                } else if (!benchmarkMode) {
+                    sessionMessagesJson = result.messagesJson
+                    transcriptStore.edit().putString("messages", result.messagesJson).apply()
+                }
+                runCatching { benchmarkRun.complete(answer, result.evidenceJson) }
                 Log.i("MobileAgent", "Agent request completed; answerLength=${answer.length}")
                 add(MessageRole.AGENT, answer)
+                evidenceSummary(result.evidenceJson)?.let { add(MessageRole.STATUS, it) }
                 _state.value = _state.value.copy(
                     running = false,
                     status = AgentStatus.COMPLETE,
-                    currentStep = "任务完成",
+                    currentStep = "已返回结果",
                     approval = null,
                 )
             } catch (cancelled: kotlinx.coroutines.CancellationException) {
@@ -90,29 +108,54 @@ object AgentSession {
             } catch (error: Throwable) {
                 runCatching { benchmarkRun.fail(error) }
                 Log.e("MobileAgent", "Agent request failed", error)
-                add(MessageRole.ERROR, error.message ?: "任务失败")
+                val guidance = UserGuidance.error(error.message)
+                add(MessageRole.ERROR, guidance)
                 _state.value = _state.value.copy(
                     running = false,
                     status = AgentStatus.ERROR,
-                    error = error.message,
+                    error = guidance,
                     currentStep = "任务失败",
                     approval = null,
                 )
             }
         }
+        return true
     }
 
-    private suspend fun requestApproval(description: String): Boolean {
+    private fun reject(message: String): Boolean {
+        add(MessageRole.ERROR, message)
+        _state.value = _state.value.copy(status = AgentStatus.ERROR, error = message, currentStep = "需要处理")
+        return false
+    }
+
+    private suspend fun requestApproval(approval: ApprovalRequest): Boolean {
         val deferred = CompletableDeferred<Boolean>()
         approvalResult = deferred
-        _state.value = _state.value.copy(status = AgentStatus.WAITING_APPROVAL, approval = ApprovalRequest(description = description), currentStep = "等待用户确认")
+        _state.value = _state.value.copy(status = AgentStatus.WAITING_APPROVAL, approval = approval, currentStep = "等待用户确认")
         return deferred.await().also {
             approvalResult = null
             _state.value = _state.value.copy(approval = null, status = AgentStatus.ACTING)
         }
     }
 
+    /** 把最终声明与最后一次 Observation/ToolResult 绑定成一条用户可见的完成依据。 */
+    private fun evidenceSummary(evidenceJson: String?): String? {
+        val evidence = evidenceJson?.let { runCatching { JSONObject(it) }.getOrNull() } ?: return null
+        val observation = evidence.optJSONObject("last_observation")
+        val app = observation?.optString("current_app")?.takeIf { it.isNotBlank() && it != "null" }
+        val bound = evidence.optBoolean("claim_follows_tool_evidence")
+        return if (bound && app != null) "结果依据：已读取操作后的页面。请核对上面的结果是否满足你的目标。"
+        else "结果尚未获得最新页面验证，请核对后再继续。"
+    }
+
     fun resolveApproval(approved: Boolean) { approvalResult?.complete(approved) }
+
+    fun newTask(): Boolean {
+        if (_state.value.running) return false
+        sessionMessagesJson = null
+        _state.value = AgentState()
+        return true
+    }
 
     fun stop() {
         approvalResult?.complete(false)

@@ -25,13 +25,15 @@ class BenchmarkRunStore private constructor(
     private val taskId = TASK_PATTERN.find(prompt)?.groupValues?.get(1) ?: "ad_hoc"
     private val benchmarkCohort = COHORT_PATTERN.find(prompt)?.groupValues?.get(1) ?: "unspecified"
     private val attempt = nextAttempt(context, taskId)
+    private var completionEvidence: String? = null
 
     init {
         runCatching { writePending() }
             .onFailure { Log.e("MobileAgentBenchmark", "pending write failed", it) }
     }
 
-    fun complete(answer: String) {
+    fun complete(answer: String, evidenceJson: String? = null) {
+        completionEvidence = evidenceJson
         val result = parseResult(answer)
         val validation = validateResult(result)
         val toolFailure = metrics.lastToolErrorCode.takeIf {
@@ -136,9 +138,15 @@ class BenchmarkRunStore private constructor(
             .put("app_version", targetVersion ?: JSONObject.NULL)
             .put("result", result)
             .put("evidence", JSONArray(metrics.evidence))
+            .put("completion_evidence", parseCompletionEvidence())
             .put("failure_code", failureCode ?: JSONObject.NULL)
             .put("failure_stage", failureStage ?: JSONObject.NULL)
             .put("notes", notes ?: JSONObject.NULL)
+    }
+
+    private fun parseCompletionEvidence(): Any {
+        val raw = completionEvidence ?: return JSONObject.NULL
+        return runCatching { JSONObject(raw) }.getOrElse { JSONObject.NULL }
     }
 
     private fun writePending() {
@@ -259,35 +267,52 @@ class BenchmarkRunStore private constructor(
         @Synchronized
         fun reconcileInterrupted(context: Context) {
             try {
-                val pending = pendingFile(context)
-                if (!pending.exists()) return
-                val record = runCatching { JSONObject(pending.readText()) }.getOrNull()
-                if (record == null) {
-                    pending.delete()
-                    return
-                }
-                val runId = record.optString("run_id")
-                val runs = file(context)
-                val alreadyFinalized = runs.exists() && runs.useLines { lines ->
-                    lines.any { line -> line.contains("\"run_id\":\"$runId\"") }
-                }
-                if (!alreadyFinalized) {
-                    val elapsed = runCatching {
-                        java.time.Duration.between(Instant.parse(record.getString("started_at")), Instant.now()).toMillis()
-                    }.getOrDefault(0L).coerceAtLeast(0L)
-                    record.put("duration_ms", elapsed)
-                        .put("status", "failed")
-                        .put("crash", true)
-                        .put("permission_lost", !AccessibilityBridge.isEnabled(context))
-                        .put("failure_code", "RUN_INTERRUPTED")
-                        .put("failure_stage", "process")
-                        .put("notes", "Recovered an unfinished run after process termination; counters may be incomplete.")
-                    appendRecord(context, record)
-                }
-                pending.delete()
+                reconcileInterruptedFiles(
+                    pending = pendingFile(context),
+                    runs = file(context),
+                    permissionLost = !AccessibilityBridge.isEnabled(context),
+                )
             } catch (error: Throwable) {
                 Log.e("MobileAgentBenchmark", "pending reconciliation failed", error)
             }
+        }
+
+        /**
+         * 纯文件级中断回收（可单测）：pending 存在且未在 runs.jsonl 终结时，补写
+         * RUN_INTERRUPTED 失败记录并删除 pending。**绝不自动重放任务**——本函数
+         * 只固化证据，不触发任何续跑/重试；下一次任务由用户显式发起。
+         *
+         * @return true = 回收了一条未完成记录；false = 无 pending 或已终结/损坏已清理
+         */
+        internal fun reconcileInterruptedFiles(pending: File, runs: File, permissionLost: Boolean): Boolean {
+            if (!pending.exists()) return false
+            val record = runCatching { JSONObject(pending.readText()) }.getOrNull()
+            if (record == null) {
+                pending.delete()
+                return false
+            }
+            val runId = record.optString("run_id")
+            val alreadyFinalized = runs.exists() && runs.useLines { lines ->
+                lines.any { line -> line.contains("\"run_id\":\"$runId\"") }
+            }
+            if (!alreadyFinalized) {
+                val elapsed = runCatching {
+                    java.time.Duration.between(Instant.parse(record.getString("started_at")), Instant.now()).toMillis()
+                }.getOrDefault(0L).coerceAtLeast(0L)
+                record.put("duration_ms", elapsed)
+                    .put("status", "failed")
+                    .put("crash", true)
+                    .put("permission_lost", permissionLost)
+                    .put("failure_code", "RUN_INTERRUPTED")
+                    .put("failure_stage", "process")
+                    .put("replay", false)
+                    .put("notes", "Recovered an unfinished run after process termination; counters may be incomplete. No auto-replay.")
+                val directory = runs.parentFile ?: return false
+                directory.mkdirs()
+                runs.appendText(record.toString() + "\n")
+            }
+            pending.delete()
+            return !alreadyFinalized
         }
 
         private fun appendRecord(context: Context, record: JSONObject) {

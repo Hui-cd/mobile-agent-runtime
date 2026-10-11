@@ -9,6 +9,10 @@ import ai.mobileagent.session.AgentSession
 
 class AgentTaskTestReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == "ai.mobileagent.DEBUG_STOP_AGENT_TASK") {
+            AgentSession.stop()
+            return
+        }
         if (intent.action != ACTION) return
         val prompt = intent.getStringExtra(EXTRA_PROMPT_BASE64)
             ?.let { encoded -> runCatching { String(Base64.decode(encoded, Base64.DEFAULT), Charsets.UTF_8) }.getOrNull() }
@@ -18,8 +22,8 @@ class AgentTaskTestReceiver : BroadcastReceiver() {
             Log.e(TAG, "task rejected: missing prompt")
             return
         }
-        Log.i(TAG, "task accepted; promptLength=${prompt.length}")
-        AgentSession.start(context.applicationContext, prompt)
+        val accepted = AgentSession.start(context.applicationContext, prompt, freshSession = intent.getBooleanExtra("fresh_session", false))
+        Log.i(TAG, "task ${if (accepted) "accepted" else "rejected"}; promptLength=${prompt.length}")
     }
 
     private companion object {

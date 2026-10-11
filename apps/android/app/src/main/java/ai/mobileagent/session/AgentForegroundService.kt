@@ -7,6 +7,8 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import android.content.Context
 import ai.mobileagent.MainActivity
 import ai.mobileagent.R
 import ai.mobileagent.model.AgentStatus
@@ -113,6 +115,13 @@ class AgentForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     companion object {
+        fun notificationsAvailable(context: Context): Boolean {
+            if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return false
+            val manager = context.getSystemService(NotificationManager::class.java)
+            return listOf(CHANNEL_ID, ATTENTION_CHANNEL_ID).all {
+                manager.getNotificationChannel(it)?.importance != NotificationManager.IMPORTANCE_NONE
+            }
+        }
         const val CHANNEL_ID = "agent_tasks"
         const val ATTENTION_CHANNEL_ID = "agent_attention"
         const val NOTIFICATION_ID = 1001

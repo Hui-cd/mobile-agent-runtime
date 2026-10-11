@@ -11,10 +11,30 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.SystemBarStyle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material.icons.outlined.Smartphone
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.automirrored.outlined.ManageSearch
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import ai.mobileagent.ui.GlacierTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -86,12 +106,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT), navigationBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT))
         refreshNotificationAccess()
         hiddenEnabled = ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(this)
         val endpointStore = ModelEndpointStore(this)
         setContent {
-            MaterialTheme { MobileAgentScreen(
+            GlacierTheme { MobileAgentScreen(
                 keyConfigured = ApiKeyStore(this).isConfigured(),
                 initialEndpoint = endpointStore.load(),
                 accessibilityConnected = accessibilityEnabled,
@@ -205,8 +225,19 @@ private fun MobileAgentScreen(
     var advanced by remember { mutableStateOf(initialEndpoint.baseUrl != ModelEndpoint.DEFAULT_BASE_URL || initialEndpoint.model != ModelEndpoint.DEFAULT_MODEL) }
 
     Scaffold(topBar = { TopAppBar(
-        title = { Text("Mobile Agent") },
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Box(Modifier.size(34.dp).background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Outlined.Smartphone, contentDescription = null, modifier = Modifier.size(21.dp), tint = MaterialTheme.colorScheme.primary)
+                }
+                Text("Mobile Agent", style = MaterialTheme.typography.titleLarge)
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
         actions = {
+            IconButton(onClick = { if (AgentSession.newTask()) prompt = "" }, enabled = !state.running) {
+                Icon(Icons.Default.Add, contentDescription = "新任务", tint = MaterialTheme.colorScheme.primary)
+            }
             IconButton(onClick = { menuOpen = true }) { Icon(Icons.Default.MoreVert, contentDescription = "设置与诊断") }
             DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                 DropdownMenuItem(text = { Text("新任务") }, enabled = !state.running, onClick = {
@@ -225,31 +256,35 @@ private fun MobileAgentScreen(
             }
         },
     ) }) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp).imePadding()) {
-            Text(
-                when {
-                    editingConfiguration && configured -> "模型设置，仅在需要时调整。"
-                    editingConfiguration -> "首次设置后，就可以直接描述任务。"
-                    !accessibilityConnected -> "还需要开启设备控制"
-                    !notificationsEnabled -> "还需要开启执行通知"
-                    else -> "已就绪，描述你想让手机做的事"
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp),
-            )
-            Spacer(Modifier.height(12.dp))
+        Column(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.surfaceContainerLow))).padding(padding).padding(horizontal = 20.dp).imePadding()) {
+            Row(Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                Surface(shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.clickable(enabled = !state.running && !editingConfiguration, onClick = onToggleHidden)) {
+                    Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Box(Modifier.size(6.dp).background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50)))
+                        Text(if (hiddenEnabled) "后台模式" else "前台模式", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    }
+                }
+                Text(when {
+                    editingConfiguration -> "模型设置"
+                    !accessibilityConnected || !notificationsEnabled -> "需要设置"
+                    state.running -> "任务进行中"
+                    state.error != null -> "需要处理"
+                    else -> "准备就绪"
+                }, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             if (!configured || editingConfiguration) {
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
-                    Card(Modifier.fillMaxWidth()) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest), border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text("配置模型", style = MaterialTheme.typography.titleMedium)
                             Text("默认使用 Kimi。密钥仅保存在这台手机，模型请求可能产生账户费用。", style = MaterialTheme.typography.bodySmall)
                             OutlinedButton(onClick = { advanced = !advanced }) { Text(if (advanced) "收起高级设置" else "高级设置：更换模型服务") }
                             if (advanced) {
-                                OutlinedTextField(baseUrl, { baseUrl = it }, Modifier.fillMaxWidth(), label = { Text("服务地址（HTTPS）") }, singleLine = true)
-                                OutlinedTextField(model, { model = it }, Modifier.fillMaxWidth(), label = { Text("模型名称") }, singleLine = true)
+                                OutlinedTextField(baseUrl, { baseUrl = it }, Modifier.fillMaxWidth(), label = { Text("服务地址（HTTPS）") }, singleLine = true, shape = RoundedCornerShape(16.dp))
+                                OutlinedTextField(model, { model = it }, Modifier.fillMaxWidth(), label = { Text("模型名称") }, singleLine = true, shape = RoundedCornerShape(16.dp))
                             }
-                            OutlinedTextField(apiKey, { apiKey = it }, Modifier.fillMaxWidth(), label = { Text(if (configured) "新密钥（留空保留原密钥）" else "模型密钥（API Key）") }, visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true)
+                            OutlinedTextField(apiKey, { apiKey = it }, Modifier.fillMaxWidth(), label = { Text(if (configured) "新密钥（留空保留原密钥）" else "模型密钥（API Key）") }, visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true, shape = RoundedCornerShape(16.dp))
                             configurationError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Button(onClick = {
@@ -298,12 +333,11 @@ private fun MobileAgentScreen(
                     }
                     Spacer(Modifier.height(12.dp))
                 }
-                if (state.messages.isEmpty() && configured && accessibilityConnected && notificationsEnabled) {
-                    OutlinedButton(onClick = { prompt = "打开时钟，进入秒表页，再返回闹钟页。" }, modifier = Modifier.padding(vertical = 12.dp)) {
-                        Text("试试：切换时钟页签")
-                    }
+                if (state.messages.isEmpty()) {
+                    EmptyTask(Modifier.weight(1f), onExample = { prompt = it })
+                } else {
+                    Chat(state, Modifier.weight(1f))
                 }
-                Chat(state, Modifier.weight(1f))
                 state.approval?.let { approval ->
                     Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -323,39 +357,39 @@ private fun MobileAgentScreen(
                     }
                 }
                 if (state.running) {
-                    Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                        CircularProgressIndicator(Modifier.padding(end = 12.dp))
-                        Text(state.currentStep, Modifier.weight(1f))
-                        OutlinedButton(onClick = AgentSession::stop) { Text("停止") }
+                    Surface(Modifier.fillMaxWidth().padding(vertical = 10.dp), shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.primaryContainer) {
+                        Row(Modifier.padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
+                            Text(state.currentStep, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                            OutlinedButton(onClick = AgentSession::stop) { Text("停止") }
+                        }
                     }
                 } else {
-                    Text(
-                        if (hiddenEnabled) "后台操作已开启，主屏可继续使用。可从通知停止任务。" else "操作时会切到目标应用。你可以从通知停止任务。",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(vertical = 8.dp),
-                    )
+                    Text(if (hiddenEnabled) "后台操作 · 主屏可以继续使用" else "前台操作 · 执行时会打开目标应用",
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 12.dp, bottom = 8.dp))
                 }
-                Row(Modifier.fillMaxWidth().padding(bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                    val canRun = prompt.isNotBlank() && !state.running && configured && accessibilityConnected && notificationsEnabled
-                    val submit = {
-                        val value = prompt.trim()
-                        if (value.isNotEmpty() && canRun && onRun(value)) { prompt = "" }
-                    }
-                    OutlinedTextField(
-                        prompt,
-                        { prompt = it },
-                        Modifier.weight(1f),
-                        placeholder = { Text("例如：打开时钟，进入闹钟页面，告诉我有哪些闹钟") },
-                        maxLines = 4,
-                        enabled = !state.running,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                        keyboardActions = KeyboardActions(onSend = { submit() }),
-                    )
-                    IconButton(onClick = submit, enabled = canRun) {
-                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "运行任务")
+                val canRun = prompt.isNotBlank() && !state.running && configured && accessibilityConnected && notificationsEnabled
+                val submit = {
+                    val value = prompt.trim()
+                    if (value.isNotEmpty() && canRun && onRun(value)) prompt = ""
+                }
+                Surface(Modifier.fillMaxWidth().padding(bottom = 14.dp), shape = RoundedCornerShape(26.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), shadowElevation = 1.dp) {
+                    Row(Modifier.padding(7.dp), verticalAlignment = Alignment.CenterVertically) {
+                        TextField(prompt, { prompt = it }, Modifier.weight(1f),
+                            placeholder = { Text("描述你想完成的任务…", style = MaterialTheme.typography.bodyMedium) },
+                            maxLines = 4, enabled = !state.running,
+                            colors = TextFieldDefaults.colors(focusedContainerColor = Color.Transparent, unfocusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent, focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent, disabledIndicatorColor = Color.Transparent),
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { submit() }))
+                        FilledIconButton(onClick = submit, enabled = canRun, modifier = Modifier.size(48.dp), shape = RoundedCornerShape(18.dp)) {
+                            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "运行任务", modifier = Modifier.size(21.dp))
+                        }
                     }
                 }
+
             }
         }
     }
@@ -370,15 +404,25 @@ private fun Chat(state: AgentState, modifier: Modifier = Modifier) {
     LazyColumn(modifier.fillMaxWidth(), state = listState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         item { Spacer(Modifier.height(8.dp)) }
         items(state.messages, key = { it.id }) { message ->
-            val user = message.role == MessageRole.USER
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = if (user) Arrangement.End else Arrangement.Start) {
-                Box(Modifier.fillMaxWidth(if (user) .86f else .94f).background(
-                    when (message.role) {
-                        MessageRole.USER -> MaterialTheme.colorScheme.primaryContainer
-                        MessageRole.ERROR -> MaterialTheme.colorScheme.errorContainer
-                        MessageRole.STATUS -> MaterialTheme.colorScheme.surfaceVariant
-                        else -> MaterialTheme.colorScheme.secondaryContainer
-                    }, RoundedCornerShape(16.dp)).padding(12.dp)) { Text(message.text) }
+            if (message.role == MessageRole.STATUS) {
+                Text(message.text, Modifier.padding(horizontal = 6.dp, vertical = 6.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            } else {
+                val user = message.role == MessageRole.USER
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = if (user) Arrangement.End else Arrangement.Start) {
+                    Surface(Modifier.fillMaxWidth(if (user) .86f else .97f),
+                        shape = if (user) RoundedCornerShape(22.dp, 22.dp, 6.dp, 22.dp) else RoundedCornerShape(6.dp, 22.dp, 22.dp, 22.dp),
+                        color = when (message.role) {
+                            MessageRole.USER -> MaterialTheme.colorScheme.primaryContainer
+                            MessageRole.ERROR -> MaterialTheme.colorScheme.errorContainer
+                            else -> MaterialTheme.colorScheme.surfaceContainerLowest
+                        }, border = if (user) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            if (!user) Text(if (message.role == MessageRole.ERROR) "需要处理" else "Mobile Agent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(message.text, style = MaterialTheme.typography.bodyLarge,
+                                color = if (message.role == MessageRole.ERROR) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurface)
+                        }
+                    }
+                }
             }
         }
     }
@@ -389,5 +433,38 @@ private fun ApprovalRow(label: String, value: String) {
     Row(Modifier.fillMaxWidth()) {
         Text(label, Modifier.width(56.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value.ifBlank { "—" }, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+
+@Composable
+private fun EmptyTask(modifier: Modifier, onExample: (String) -> Unit) {
+    Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(top = 26.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("从一句指令开始", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+        Text("你想让手机\n做些什么？", style = MaterialTheme.typography.headlineLarge)
+        Text("打开应用、查找内容，\n把需要完成的事交给 Agent。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(18.dp))
+        Text("试试这些任务", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        TaskExample(Icons.Outlined.AccessTime, "看看时钟", "切到秒表，再返回闹钟", onClick = { onExample("打开时钟，进入秒表页，再返回闹钟页。") })
+        TaskExample(Icons.AutoMirrored.Outlined.ManageSearch, "查找设置", "搜索蓝牙，读出前三条结果", onClick = { onExample("打开系统设置，搜索 bluetooth，读取前三条可见结果，再返回设置首页。") })
+        TaskExample(Icons.Outlined.Download, "下载应用", "提供发行方地址，下载并安装 APK", onClick = { onExample("请帮我下载并安装应用。先向我确认发行方 APK 地址和预期包名。") })
+        Spacer(Modifier.height(14.dp))
+    }
+}
+
+@Composable
+private fun TaskExample(icon: ImageVector, title: String, description: String, onClick: () -> Unit) {
+    Surface(onClick = onClick, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerLowest, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+        Row(Modifier.padding(16.dp).heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Box(Modifier.size(44.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+            }
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+        }
     }
 }

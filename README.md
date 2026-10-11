@@ -14,6 +14,14 @@ An open-source agent that reads app screens and operates Android apps from your 
 
 </div>
 
+<p align="center">
+  <img src="docs/assets/ui-home.png" width="240" alt="Mobile Agent home screen in glacier blue">
+  &nbsp;&nbsp;
+  <img src="docs/assets/ui-task.png" width="240" alt="A completed Clock task in background mode">
+</p>
+
+<p align="center">Glacier blue interface · A completed background task</p>
+
 Describe the result you want. The agent opens an app, reads the screen, and selects the next action.
 It checks the screen after each action and returns the result in the same conversation.
 
@@ -23,14 +31,6 @@ With Shizuku, task apps can run on a separate display while you use the main scr
 > **Alpha:** Clock, Settings, and app installation have passed emulator checks. Physical phone compatibility and login handoff need further work.
 
 ## See it in use
-
-<p align="center">
-  <img src="docs/results/shizuku-ondevice-2026-10-12/ready-hidden-mode.png" width="240" alt="Mobile Agent with background mode enabled">
-  &nbsp;&nbsp;
-  <img src="docs/results/shizuku-ondevice-2026-10-12/clock-screenshot-10-1.jpg" width="240" alt="Clock on the separate display, with the stopwatch paused at 5:09.85">
-</p>
-
-<p align="center">App interface · Clock on the separate display</p>
 
 Try these tasks:
 

@@ -14,6 +14,14 @@
 
 </div>
 
+<p align="center">
+  <img src="docs/assets/ui-home.png" width="240" alt="冰川奶油蓝配色的 Mobile Agent 首页">
+  &nbsp;&nbsp;
+  <img src="docs/assets/ui-task.png" width="240" alt="后台时钟任务完成后的对话">
+</p>
+
+<p align="center">冰川奶油蓝界面 · 后台任务完成后的对话</p>
+
 告诉手机你想完成什么。Agent 会打开应用，读取页面，选择下一步动作。
 每次操作后，它都会重新观察页面，并在当前对话里返回结果。
 
@@ -23,14 +31,6 @@ Agent 在手机内运行。模型推理使用你配置的 API 服务和密钥。
 > **Alpha 阶段：** 已在模拟器上跑通时钟、系统设置和应用安装。真机兼容性、登录和验证码接管仍在开发中。
 
 ## 看它怎么用
-
-<p align="center">
-  <img src="docs/results/shizuku-ondevice-2026-10-12/ready-hidden-mode.png" width="240" alt="Mobile Agent 已开启后台模式">
-  &nbsp;&nbsp;
-  <img src="docs/results/shizuku-ondevice-2026-10-12/clock-screenshot-10-1.jpg" width="240" alt="独立显示屏中的时钟，秒表暂停在 5:09.85">
-</p>
-
-<p align="center">应用界面 · 独立显示屏中的时钟</p>
 
 可以先试这些任务：
 

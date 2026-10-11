@@ -1,0 +1,145 @@
+[
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "[COHORT:shizuku-wechat-install-02] 已下载的官方微信 download_id 为 48。请先用 download_status 查询实际结果，若 downloaded 用 install_app 安装此下载，params.package=com.tencent.mm。最多尝试一次安装，失败立即输出原始错误，不要反复下载。不要登录或打开微信，不要切主屏。\n\n<device_state_contract>后台模式遇到登录、验证码、安全页面停止并报告，不要尝试切到主屏。工具返回 SHIZUKU_UNAVAILABLE、SHIZUKU_DIED、SHIZUKU_NOT_AUTHORIZED、DEVICE_LOCKED 或 SCREEN_NOT_INTERACTIVE 时，当前 GUI 任务不能继续；不要重试设备工具。普通任务请提示用户解锁/点亮屏幕；benchmark 只输出所需 JSON，无法读取的字段填 null。</device_state_contract>"
+      }
+    ],
+    "timestamp": 1791736747557
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_0_a1dd9639",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1306,
+      "output": 78,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1384,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736753128
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_0_a1dd9639",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloaded\",\"bytes_downloaded\":285284760,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloaded\",\"bytes_downloaded\":285284760,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736753199
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_1_9f956e5f",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "install_app",
+          "params": {
+            "download_id": 48,
+            "package": "com.tencent.mm"
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1441,
+      "output": 80,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1521,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736757262
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_1_9f956e5f",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"installed\":true,\"package\":\"com.tencent.mm\",\"version\":\"8.0.79\"}"
+      }
+    ],
+    "details": {
+      "json": "{\"installed\":true,\"package\":\"com.tencent.mm\",\"version\":\"8.0.79\"}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736797730
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "安装完成。\n\n- download_status：downloaded（285,284,760 / 285,284,760 字节）\n- install_app 结果：installed=true，包名 com.tencent.mm，版本 8.0.79\n\n未打开微信、未登录、未切主屏。"
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1567,
+      "output": 76,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1643,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "stop",
+    "timestamp": 1791736802252
+  }
+]

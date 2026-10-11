@@ -51,4 +51,19 @@ class UiTargetResolverTest {
             assertThrows(IllegalStateException::class.java) { UiTargetResolver.validateObservation(id, "a", original, current) }
         }
     }
+    @Test fun `dynamic unrelated text does not invalidate an unchanged target`() {
+        val before = listOf(node(0, "Pause"), node(1, "00:01"))
+        val after = listOf(node(0, "Pause"), node(1, "00:02"))
+        UiTargetResolver.validateTargetObservation("a", "a", before, after, JSONObject().put("index", 0), "click")
+    }
+
+    @Test fun `changed target and foreign observation remain rejected`() {
+        val before = listOf(node(0, "Start"))
+        assertThrows(IllegalStateException::class.java) {
+            UiTargetResolver.validateTargetObservation("a", "a", before, listOf(node(0, "Pause")), JSONObject().put("index", 0), "click")
+        }
+        assertThrows(IllegalStateException::class.java) {
+            UiTargetResolver.validateTargetObservation("b", "a", before, before, JSONObject().put("index", 0), "click")
+        }
+    }
 }

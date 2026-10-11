@@ -1,6 +1,6 @@
 # Mobile Agent Runtime：当前进展与目标
 
-更新：2026-10-11。当前阶段：Technical Alpha。
+更新：2026-10-12。当前阶段：Technical Alpha。
 
 当前只推进 Android。先稳定通用工具闭环，再按实际失败逐步增量，之后接入飞书、微信。仓库已有 iOS 实现保留，新的 iOS 研究改动不属于本次发布。
 
@@ -16,9 +16,10 @@
 - 模拟器使用在线模型，时钟启动固定基线 10/10；通用任务在时钟和设置通过，模型自己选择调用和目标，未预编排点击序列。
 - 实际日常页面入口完成“新任务 → 示例 → 发送 → 切换时钟页签 → 返回中文结果”；修复冷启动隐藏会话及旧 benchmark 格式污染普通任务的问题。
 - 简化配置与日常页面；空密钥保留原配置，所有任务入口检查权限，失败提示中文处理办法。
-- 本地 Node 测试 56/56、Android JVM 测试 50/50及 debug APK 构建通过。这些检查不等于真机产品验收。
+- 本地 Node 测试 56/56、Android JVM 测试 52/52及 debug APK 构建通过。这些检查不等于真机产品验收。
 - 飞书开发入口支持授权私聊的查看时钟、状态、停止，通过电脑 ADB 触发手机内 Agent；未配置账号，尚无线上收发证据。
-- Android VirtualDisplay 研究骨架保留，未接入产品执行路径，无真机证据。
+- 已接入手机内 Shizuku UserService + 独立显示屏，模拟器验证秒表启动/暂停和截图、系统设置搜索/返回；主屏可继续使用。下载和安装工具实际安装官方微信 com.tencent.mm 8.0.79。
+- Shizuku 本次通过电脑 ADB 激活；任务执行不依赖 scrcpy 或电脑控制进程。手机自身无线启动、物理真机和登录/验证码接管尚未验收。
 
 ## 尚未完成与增量顺序
 
@@ -35,6 +36,7 @@
 - [使用体验审查与实际页面验证](docs/android-usability-review.md)
 - [模拟器与飞书开发入口](docs/android-channel-development.md)
 - [Android 真机 smoke](docs/android-device-smoke.md)
-- [Android 隐藏执行研究](docs/android-hidden-execution-design.md)
+- [Android 后台执行设计与使用](docs/android-hidden-execution-design.md)
+- [Shizuku 手机内执行实测](docs/results/shizuku-ondevice-2026-10-12/README.md)
 
 每次增量保留已有基线，明确区分实现、模拟器证据、真机证据和未验证设计。

@@ -1,0 +1,1408 @@
+Activity Resolver Table:
+  Full MIME Types:
+      vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      application/*:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      text/*:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      audio/*:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      vnd.android.cursor.item/vnd.com.tencent.mm.login:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      video/*:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        666fd67 com.tencent.mm/.ui.tools.ShareToStatusUI filter fb97714
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      */heic:
+        f47e575 com.tencent.mm/.ui.tools.ShareScreenImgUI filter 704890a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        bbe63f1 com.tencent.mm/.ui.tools.ShareScreenToTimeLineUI filter fea2bd6
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      image/*:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter f262d26
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        666fd67 com.tencent.mm/.ui.tools.ShareToStatusUI filter fb97714
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter d5c0903
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 5ed96b9
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 62bbafe
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        20c325f com.tencent.mm/.ui.tools.ShareToTimeLineUI filter b0494ac
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        f47e575 com.tencent.mm/.ui.tools.ShareScreenImgUI filter 704890a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        bbe63f1 com.tencent.mm/.ui.tools.ShareScreenToTimeLineUI filter fea2bd6
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+
+  Base MIME Types:
+      vnd.android.cursor.item:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      *:
+        f47e575 com.tencent.mm/.ui.tools.ShareScreenImgUI filter 704890a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        bbe63f1 com.tencent.mm/.ui.tools.ShareScreenToTimeLineUI filter fea2bd6
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+
+  Wild MIME Types:
+      text:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      audio:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      image:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter f262d26
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        666fd67 com.tencent.mm/.ui.tools.ShareToStatusUI filter fb97714
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter d5c0903
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 5ed96b9
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 62bbafe
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        20c325f com.tencent.mm/.ui.tools.ShareToTimeLineUI filter b0494ac
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        f47e575 com.tencent.mm/.ui.tools.ShareScreenImgUI filter 704890a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        bbe63f1 com.tencent.mm/.ui.tools.ShareScreenToTimeLineUI filter fea2bd6
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      video:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        666fd67 com.tencent.mm/.ui.tools.ShareToStatusUI filter fb97714
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      application:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+
+  Schemes:
+      fb290293790992170:
+        c821c9d com.tencent.mm/.plugin.account.ui.CustomTabActivity filter 68c3512
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "fb290293790992170"
+      wechat:
+        8e8e599 com.tencent.mm/.recovery.ui.RecoveryUI filter e74905e
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "wechat"
+          Authority: "recovery": -1
+        f38aed1 com.tencent.mm/.recovery.RecoveryActivity filter 70c4d36
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "wechat"
+          Authority: "recovery-v3": -1
+      weixin:
+        fb179b0 com.tencent.mm/.plugin.base.stub.WXCustomSchemeEntryActivity filter fc4a029
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "weixin"
+        6ac80dc com.tencent.mm/.plugin.nfc_open.ui.NfcDeepLinkUI filter cde15e5
+          Action: "android.nfc.action.NDEF_DISCOVERED"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "weixin"
+        95948ba com.tencent.mm/.plugin.setting.ui.qrcode.GetQRCodeInfoUI filter 8eecec8
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "weixin"
+          Authority: "qr": -1
+        75f2b61 com.tencent.mm/.framework.app.ThirdPayCallbackActivity filter c33686
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "weixin"
+          Authority: "pay": -1
+          Path: "PatternMatcher{LITERAL: /thirdpay/dcep_callback}"
+      tencent1103188687:
+        2524c3f com.tencent.mm/.plugin.webview.ui.tools.QQCallbackUI filter 7ffd90c
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "tencent1103188687"
+      http:
+        95948ba com.tencent.mm/.plugin.setting.ui.qrcode.GetQRCodeInfoUI filter 908d36b
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "http"
+          Authority: "weixin.qq.com": -1
+          Path: "PatternMatcher{PREFIX: /r/}"
+
+  Non-Data Actions:
+      android.hardware.usb.action.USB_DEVICE_ATTACHED:
+        d940e57 com.tencent.mm/.plugin.backup.mmaoa.UsbAttachIntentUI filter 7444e2d
+          Action: "android.hardware.usb.action.USB_DEVICE_ATTACHED"
+      com.tencent.mm.gwallet.ACTION_PAY_REQUEST:
+        7594255 com.tencent.mm/.plugin.gwallet.GWalletUI filter 5f5546a
+          Action: "com.tencent.mm.gwallet.ACTION_PAY_REQUEST"
+          Action: "com.tencent.mm.gwallet.ACTION_QUERY_REQUEST"
+          Category: "android.intent.category.DEFAULT"
+      android.nfc.action.TECH_DISCOVERED:
+        83adfae com.tencent.mm/.plugin.nfc_open.ui.NfcWebViewUI filter fcc714f
+          Action: "android.nfc.action.TECH_DISCOVERED"
+      com.action.fingerprint.OPEN:
+        d296d5b com.tencent.mm/.plugin.wallet_index.ui.WalletOpenFingerprintPayRedirectUI filter 95779f8
+          Action: "com.action.fingerprint.OPEN"
+          Category: "android.intent.category.DEFAULT"
+      com.tencent.mm.action.GET_ADRESS:
+        94c155a com.tencent.mm/.ui.tools.MultiStageCitySelectUI filter 182b38b
+          Action: "com.tencent.mm.action.GET_ADRESS"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+        4328f6f com.tencent.mm/.ui.LauncherUI filter 15147c
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.MULTIWINDOW_LAUNCHER"
+      com.tencent.mm.action.BIZSHORTCUT:
+        4328f6f com.tencent.mm/.ui.LauncherUI filter 91fb105
+          Action: "com.tencent.mm.action.BIZSHORTCUT"
+          Category: "android.intent.category.DEFAULT"
+      com.tencent.mm.ui.ShortCutDispatchAction:
+        66b957b com.tencent.mm/.ui.ShortCutDispatchActivity filter b7c4f98
+          Action: "com.tencent.mm.ui.ShortCutDispatchAction"
+          Category: "android.intent.category.DEFAULT"
+      com.tencent.mm.gwallet.ACTION_QUERY_REQUEST:
+        7594255 com.tencent.mm/.plugin.gwallet.GWalletUI filter 5f5546a
+          Action: "com.tencent.mm.gwallet.ACTION_PAY_REQUEST"
+          Action: "com.tencent.mm.gwallet.ACTION_QUERY_REQUEST"
+          Category: "android.intent.category.DEFAULT"
+      com.tencent.mm.action.QB_OPEN_MATERIAL:
+        f5f3b47 com.tencent.mm/.pluginsdk.ui.tools.AppBrandOpenMaterialUI filter f860f74
+          Action: "com.tencent.mm.action.QB_OPEN_MATERIAL"
+          Category: "android.intent.category.DEFAULT"
+      com.tencent.mm.action.WX_SHORTCUT:
+        bb52f62 com.tencent.mm/.plugin.base.stub.WXShortcutEntryActivity filter 86138f3
+          Action: "com.tencent.mm.action.WX_SHORTCUT"
+          Category: "android.intent.category.DEFAULT"
+      android.hardware.usb.action.USB_ACCESSORY_ATTACHED:
+        d940e57 com.tencent.mm/.plugin.backup.mmaoa.UsbAttachIntentUI filter 2b2cd44
+          Action: "android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+
+  MIME Typed Actions:
+      com.tencent.mm.login.ACTION_LOGIN:
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      android.intent.action.SEND:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter 66f5881
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "audio"
+          StaticType: "application"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        666fd67 com.tencent.mm/.ui.tools.ShareToStatusUI filter fb97714
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter b37f5b2
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "video"
+          StaticType: "text"
+          StaticType: "application"
+          StaticType: "audio"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 5ed96b9
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        20c325f com.tencent.mm/.ui.tools.ShareToTimeLineUI filter b0494ac
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      android.intent.action.VIEW:
+        f47e575 com.tencent.mm/.ui.tools.ShareScreenImgUI filter 704890a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        bbe63f1 com.tencent.mm/.ui.tools.ShareScreenToTimeLineUI filter fea2bd6
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          StaticType: "*/heic"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        fca44e3 com.tencent.mm/.plugin.account.ui.ContactsSyncUI filter 4aeaee0
+          Action: "com.tencent.mm.login.ACTION_LOGIN"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.login"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.profile"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.voip.video"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.plugin.sns.timeline"
+          StaticType: "vnd.android.cursor.item/vnd.com.tencent.mm.chatting.phonenum"
+      android.intent.action.SEND_MULTIPLE:
+        fdcfc68 com.tencent.mm/.ui.tools.ShareImgUI filter f262d26
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        1b7fbbd com.tencent.mm/.ui.tools.AddFavoriteUI filter d5c0903
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        640f080 com.tencent.mm/.ui.tools.ShareToBizPhotoAccountUI filter 62bbafe
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "image"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.hardware.usb.action.USB_DEVICE_ATTACHED:
+        d878437 com.tencent.mm/.plugin.backup.mmaoa.UsbBroadcastReceiver filter ec8670d
+          Action: "android.hardware.usb.action.USB_DEVICE_ATTACHED"
+          Action: "android.hardware.usb.action.USB_DEVICE_DETACHED"
+          Action: "android.hardware.usb.action.USB_ACCESSORY_DETACHED"
+      android.intent.action.BATTERY_OKAY:
+        39a8f35 com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 86f4fca
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      com.tencent.xweb.record_trace.finish:
+        7f52479 com.tencent.mm/com.tencent.xweb.debug.XWebTraceRecordFinishReceiver filter 31395be
+          Action: "com.tencent.xweb.record_trace.finish"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        5ead61f com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter d34cd6c
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+      com.tencent.mm.permission.MM_AUTO_REPLY_MESSAGE:
+        7bb9010 com.tencent.mm/.plugin.auto.service.MMAutoMessageReplyReceiver filter d216709
+          Action: "com.tencent.mm.permission.MM_AUTO_REPLY_MESSAGE"
+      android.hardware.usb.action.USB_DEVICE_DETACHED:
+        d878437 com.tencent.mm/.plugin.backup.mmaoa.UsbBroadcastReceiver filter ec8670d
+          Action: "android.hardware.usb.action.USB_DEVICE_ATTACHED"
+          Action: "android.hardware.usb.action.USB_DEVICE_DETACHED"
+          Action: "android.hardware.usb.action.USB_ACCESSORY_DETACHED"
+      com.tencent.mm.Intent.ACTION_CLICK_FILEDOWNLOAD_NOTIFICATION:
+        85c634b com.tencent.mm/.plugin.downloader.ui.FileDownloadNotificationClickReceiver filter c995128
+          Action: "com.tencent.mm.Intent.ACTION_CLICK_FILEDOWNLOAD_NOTIFICATION"
+      android.intent.action.DEVICE_STORAGE_LOW:
+        1f0b53b com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 1575458
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.net.conn.CONNECTIVITY_CHANGE:
+        1f1e9b1 com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter 91a9e96
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+      com.tencent.mmaoa.USB_DEVICE_PERMISSION:
+        d878437 com.tencent.mm/.plugin.backup.mmaoa.UsbBroadcastReceiver filter 6863da4
+          Action: "com.tencent.mmaoa.USB_DEVICE_PERMISSION"
+          Action: "com.tencent.mmaoa.USB_ACCESSORY_PERMISSION"
+      android.intent.action.DEVICE_STORAGE_OK:
+        1f0b53b com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 1575458
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      com.android.vending.INSTALL_REFERRER:
+        4ab1de9 com.tencent.mm/com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver filter b2eea6e
+          Action: "com.android.vending.INSTALL_REFERRER"
+      com.tencent.mmaoa.USB_ACCESSORY_PERMISSION:
+        d878437 com.tencent.mm/.plugin.backup.mmaoa.UsbBroadcastReceiver filter 6863da4
+          Action: "com.tencent.mmaoa.USB_DEVICE_PERMISSION"
+          Action: "com.tencent.mmaoa.USB_ACCESSORY_PERMISSION"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        6b19d3c com.tencent.mm/androidx.profileinstaller.ProfileInstallReceiver filter ff06ac5
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      com.google.android.c2dm.intent.RECEIVE:
+        d7b850f com.tencent.mm/com.google.firebase.iid.FirebaseInstanceIdReceiver filter 8bc699c
+          Action: "com.google.android.c2dm.intent.RECEIVE"
+          Category: "com.tencent.mm"
+      android.intent.action.BATTERY_LOW:
+        39a8f35 com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 86f4fca
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+        aab6a17 com.tencent.mm/androidx.work.impl.background.systemalarm.RescheduleReceiver filter a195e04
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.TIME_SET:
+        aab6a17 com.tencent.mm/androidx.work.impl.background.systemalarm.RescheduleReceiver filter a195e04
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      androidx.profileinstaller.action.SKIP_FILE:
+        6b19d3c com.tencent.mm/androidx.profileinstaller.ProfileInstallReceiver filter 343ac1a
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      com.tencent.mm.plugin.photoedit.action.clear:
+        f2e2d7d com.tencent.mm/.cache.ArtistCacheManager filter 433a472
+          Action: "com.tencent.mm.plugin.photoedit.action.clear"
+      com.tencent.mm.permission.MM_AUTO_HEARD_MESSAGE:
+        bc806c2 com.tencent.mm/.plugin.auto.service.MMAutoMessageHeardReceiver filter 2462cd3
+          Action: "com.tencent.mm.permission.MM_AUTO_HEARD_MESSAGE"
+      android.intent.action.BOOT_COMPLETED:
+        843f0c3 com.tencent.mm/.booter.MMReceivers$BootReceiver filter 21b1d40
+          Action: "android.intent.action.BOOT_COMPLETED"
+        aab6a17 com.tencent.mm/androidx.work.impl.background.systemalarm.RescheduleReceiver filter a195e04
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+        5ead61f com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter d34cd6c
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+      android.hardware.usb.action.USB_ACCESSORY_DETACHED:
+        d878437 com.tencent.mm/.plugin.backup.mmaoa.UsbBroadcastReceiver filter ec8670d
+          Action: "android.hardware.usb.action.USB_DEVICE_ATTACHED"
+          Action: "android.hardware.usb.action.USB_DEVICE_DETACHED"
+          Action: "android.hardware.usb.action.USB_ACCESSORY_DETACHED"
+      android.appwidget.action.APPWIDGET_UPDATE:
+        f1ee41 com.tencent.mm/.plugin.appbrand.outerwidget.AppBrandOuterWidget filter 4e06fe6
+          Action: "android.appwidget.action.APPWIDGET_UPDATE"
+      androidx.work.diagnostics.REQUEST_DIAGNOSTICS:
+        3f290b3 com.tencent.mm/androidx.work.impl.diagnostics.DiagnosticsReceiver filter 3d05670
+          Action: "androidx.work.diagnostics.REQUEST_DIAGNOSTICS"
+      com.tencent.mm.plugin.performance.elf.ElfCallUpReceiver:
+        e93cd0e com.tencent.mm/.plugin.performance.elf.ElfCallUpReceiver filter 43cc32f
+          Action: "com.tencent.mm.plugin.performance.elf.ElfCallUpReceiver"
+      androidx.work.impl.background.systemalarm.UpdateProxies:
+        28a6fed com.tencent.mm/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter 15a0e22
+          Action: "androidx.work.impl.background.systemalarm.UpdateProxies"
+      android.intent.action.CREATE_SHORTCUT:
+        78be927 com.tencent.mm/.plugin.finder.shortcuts.FinderShortcutReceiver filter 2c657d4
+          Action: "android.intent.action.CREATE_SHORTCUT"
+
+Service Resolver Table:
+  Non-Data Actions:
+      android.nfc.cardemulation.action.HOST_APDU_SERVICE:
+        1e50707 com.tencent.mm/.plugin.appbrand.jsapi.nfc.hce.HCEService filter d125034 permission android.permission.BIND_NFC_SERVICE
+          Action: "android.nfc.cardemulation.action.HOST_APDU_SERVICE"
+          Category: "android.intent.category.DEFAULT"
+      com.google.firebase.INSTANCE_ID_EVENT:
+        2f5632b com.tencent.mm/.plugin.fcm.FCMInstanceIDListenerService filter 4f48388
+          Action: "com.google.firebase.INSTANCE_ID_EVENT"
+        1742e5d com.tencent.mm/com.google.firebase.iid.FirebaseInstanceIdService filter d8643d2
+          Action: "com.google.firebase.INSTANCE_ID_EVENT"
+          mPriority=-500, mOrder=0, mHasStaticPartialTypes=false, mHasDynamicPartialTypes=false
+      com.google.firebase.MESSAGING_EVENT:
+        b0eafa5 com.tencent.mm/.plugin.fcm.WCFirebaseMessagingService filter d633f7a
+          Action: "com.google.firebase.MESSAGING_EVENT"
+        1410ca3 com.tencent.mm/com.google.firebase.messaging.FirebaseMessagingService filter 39e3ba0
+          Action: "com.google.firebase.MESSAGING_EVENT"
+          mPriority=-500, mOrder=0, mHasStaticPartialTypes=false, mHasDynamicPartialTypes=false
+      android.media.browse.MediaBrowserService:
+        f5fa121 com.tencent.mm/.plugin.finder.media.FinderLiveMediaBrowserService filter f55d946
+          Action: "android.media.browse.MediaBrowserService"
+
+Domain verification status:
+    User all:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          weixin.qq.com
+
+Permissions:
+  Permission [com.tencent.mm.WAID_PROVIDER_WRITE] (2039607):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{5fadd8a com.tencent.mm.WAID_PROVIDER_WRITE}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.permission.EXT_OPEN_APPBRAND_LAUNCHER_UI] (3a73334):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{659f818 com.tencent.mm.permission.EXT_OPEN_APPBRAND_LAUNCHER_UI}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.matrix.strategynotify] (e02d55d):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{d314856 com.tencent.mm.matrix.strategynotify}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.permission.MM_MESSAGE] (7255ed2):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{5027dc4 com.tencent.mm.permission.MM_MESSAGE}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (6398ba3):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{f9193e2 com.tencent.mm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.app.provider.ShareableChatRecords.READ_BY_CONSENT] (21e4ea0):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=normal
+    perm=PermissionInfo{28bb230 com.tencent.mm.app.provider.ShareableChatRecords.READ_BY_CONSENT}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.plugin.permission.READ] (29c6a59):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{ab90c2e com.tencent.mm.plugin.permission.READ}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.ext.permission.SPORT] (ed6961e):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=normal
+    perm=PermissionInfo{c31c15c com.tencent.mm.ext.permission.SPORT}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.ext.permission.WRITE] (c4f3eff):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature|privileged
+    perm=PermissionInfo{6cdbd3a com.tencent.mm.ext.permission.WRITE}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.backtrace.warmed_up] (b29b4cc):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{4c79748 com.tencent.mm.backtrace.warmed_up}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.permission.C2D_MESSAGE] (7a05315):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{64a7306 com.tencent.mm.permission.C2D_MESSAGE}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.matrix.permission.PROCESS_SUPERVISOR] (fd1f62a):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{762dff4 com.tencent.mm.matrix.permission.PROCESS_SUPERVISOR}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.permission.EXT_OPEN_APPBRAND_MY_COLLECTIONS] (3e2cc1b):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{68ab992 com.tencent.mm.permission.EXT_OPEN_APPBRAND_MY_COLLECTIONS}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.manual.dump] (9a351b8):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{8c80760 com.tencent.mm.manual.dump}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.vfs.broadcast] (9c00b91):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{d16dcde com.tencent.mm.vfs.broadcast}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.plugin.permission.WRITE] (d714af6):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature
+    perm=PermissionInfo{396398c com.tencent.mm.plugin.permission.WRITE}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.permission.MOVE_XLOG] (e580ef7):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature|privileged
+    perm=PermissionInfo{dafe8ea com.tencent.mm.permission.MOVE_XLOG}
+    flags=0x0
+
+Permissions:
+  Permission [com.tencent.mm.ext.permission.READ] (a17d164):
+    sourcePackage=com.tencent.mm
+    uid=10228 gids=[] type=0 prot=signature|privileged
+    perm=PermissionInfo{b336278 com.tencent.mm.ext.permission.READ}
+    flags=0x0
+
+Registered ContentProviders:
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderNearBy:
+    Provider{db1ad51 com.tencent.mm/.plugin.ext.provider.ExtControlProviderNearBy}
+  com.tencent.mm/.plugin.normsg.NormsgInfoProvider:
+    Provider{51ba9b6 com.tencent.mm/.plugin.normsg.NormsgInfoProvider}
+  com.tencent.mm/.plugin.sns.waid.WaidProvider:
+    Provider{340e6b7 com.tencent.mm/.plugin.sns.waid.WaidProvider}
+  com.tencent.mm/.plugin.base.stub.WXCommProvider:
+    Provider{1782e24 com.tencent.mm/.plugin.base.stub.WXCommProvider}
+  com.tencent.mm/.recovery.RecoveryFileProvider:
+    Provider{212cd8d com.tencent.mm/.recovery.RecoveryFileProvider}
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderEntry:
+    Provider{4b0ab42 com.tencent.mm/.plugin.ext.provider.ExtControlProviderEntry}
+  com.tencent.mm/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+    Provider{a733753 com.tencent.mm/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+  com.tencent.mm/.plugin.base.stub.MMPluginProvider:
+    Provider{b1c0890 com.tencent.mm/.plugin.base.stub.MMPluginProvider}
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderSearchContact:
+    Provider{4ebb589 com.tencent.mm/.plugin.ext.provider.ExtControlProviderSearchContact}
+  com.tencent.mm/androidx.core.content.FileProvider:
+    Provider{aa2398e com.tencent.mm/androidx.core.content.FileProvider}
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderAccountSync:
+    Provider{66ff5af com.tencent.mm/.plugin.ext.provider.ExtControlProviderAccountSync}
+  com.tencent.mm/.plugin.gwallet.GWalletQueryProvider:
+    Provider{ee11dbc com.tencent.mm/.plugin.gwallet.GWalletQueryProvider}
+  com.tencent.mm/.plugin.ext.provider.ExtContentProviderBase:
+    Provider{8512145 com.tencent.mm/.plugin.ext.provider.ExtContentProviderBase}
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderMsg:
+    Provider{30c609a com.tencent.mm/.plugin.ext.provider.ExtControlProviderMsg}
+  com.tencent.mm/.plugin.ext.provider.ExtControlProviderSNS:
+    Provider{2d03dcb com.tencent.mm/.plugin.ext.provider.ExtControlProviderSNS}
+  com.tencent.mm/.sdk.platformtools.MultiProcessSharedPreferences:
+    Provider{b8059a8 com.tencent.mm/.sdk.platformtools.MultiProcessSharedPreferences}
+  com.tencent.mm/.plugin.appbrand.app.AppBrandCriticalDataProvider:
+    Provider{e78cc1 com.tencent.mm/.plugin.appbrand.app.AppBrandCriticalDataProvider}
+  com.tencent.mm/.app.AppForegroundDelegate$Provider:
+    Provider{dbfec66 com.tencent.mm/.app.AppForegroundDelegate$Provider}
+  com.tencent.mm/.plugin.lite.storage.LiteAppContentProvider:
+    Provider{1a2eba7 com.tencent.mm/.plugin.lite.storage.LiteAppContentProvider}
+  com.tencent.mm/com.google.firebase.provider.FirebaseInitProvider:
+    Provider{556854 com.tencent.mm/com.google.firebase.provider.FirebaseInitProvider}
+  com.tencent.mm/.app.provider.ShareableChatRecordsProvider:
+    Provider{f1f33fd com.tencent.mm/.app.provider.ShareableChatRecordsProvider}
+  com.tencent.mm/com.tencent.xweb.XWebCoreContentProvider:
+    Provider{4ce68f2 com.tencent.mm/com.tencent.xweb.XWebCoreContentProvider}
+  com.tencent.mm/.plugin.expansions.ExpansionsGlobal$CP:
+    Provider{d089b43 com.tencent.mm/.plugin.expansions.ExpansionsGlobal$CP}
+  com.tencent.mm/android.support.v4.content.FileProvider:
+    Provider{4cab5c0 com.tencent.mm/android.support.v4.content.FileProvider}
+  com.tencent.mm/.plugin.game.download.GameResourceDownloadProvider:
+    Provider{3012f9 com.tencent.mm/.plugin.game.download.GameResourceDownloadProvider}
+  com.tencent.mm/.plugin.emoji.provider.EmotionContentProvider:
+    Provider{fd6223e com.tencent.mm/.plugin.emoji.provider.EmotionContentProvider}
+  com.tencent.mm/.plugin.recordvideo.background.provider.WeSeeProvider:
+    Provider{68fa89f com.tencent.mm/.plugin.recordvideo.background.provider.WeSeeProvider}
+  com.tencent.mm/androidx.startup.InitializationProvider:
+    Provider{a856dec com.tencent.mm/androidx.startup.InitializationProvider}
+  com.tencent.mm/.open_voice_control.OVCInfoProvider:
+    Provider{2d5e5b5 com.tencent.mm/.open_voice_control.OVCInfoProvider}
+  com.tencent.mm/com.tencent.shadow.core.runtime.container.PluginContainerContentProvider:
+    Provider{e244a com.tencent.mm/com.tencent.shadow.core.runtime.container.PluginContainerContentProvider}
+
+ContentProvider Authorities:
+  [com.tencent.mm.plugin.lite.logic.LiteAppInfo]:
+    Provider{1a2eba7 com.tencent.mm/.plugin.lite.storage.LiteAppContentProvider}
+      applicationInfo=ApplicationInfo{548cfcd com.tencent.mm}
+  [com.tencent.mm.plugin.recordvideo.background.provider.WeSeeProvider]:
+    Provider{68fa89f com.tencent.mm/.plugin.recordvideo.background.provider.WeSeeProvider}
+      applicationInfo=ApplicationInfo{4df2082 com.tencent.mm}
+  [com.tencent.mm.plugin.ext.entry]:
+    Provider{4b0ab42 com.tencent.mm/.plugin.ext.provider.ExtControlProviderEntry}
+      applicationInfo=ApplicationInfo{574a393 com.tencent.mm}
+  [com.tencent.mm.plugin.ext.AccountSync]:
+    Provider{66ff5af com.tencent.mm/.plugin.ext.provider.ExtControlProviderAccountSync}
+      applicationInfo=ApplicationInfo{3329fd0 com.tencent.mm}
+  [com.tencent.mm.wxa_critical_content]:
+    Provider{e78cc1 com.tencent.mm/.plugin.appbrand.app.AppBrandCriticalDataProvider}
+      applicationInfo=ApplicationInfo{41f9bc9 com.tencent.mm}
+  [com.tencent.mm.lifecycle-process]:
+    Provider{a733753 com.tencent.mm/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+      applicationInfo=ApplicationInfo{962c2ce com.tencent.mm}
+  [com.tencent.mm.open_voice_control.info]:
+    Provider{2d5e5b5 com.tencent.mm/.open_voice_control.OVCInfoProvider}
+      applicationInfo=ApplicationInfo{fbbe5ef com.tencent.mm}
+  [com.tencent.mm.plugin.ext.ExtContentProviderBase]:
+    Provider{8512145 com.tencent.mm/.plugin.ext.provider.ExtContentProviderBase}
+      applicationInfo=ApplicationInfo{8e9e8fc com.tencent.mm}
+  [com.tencent.mm.firebaseinitprovider]:
+    Provider{556854 com.tencent.mm/com.google.firebase.provider.FirebaseInitProvider}
+      applicationInfo=ApplicationInfo{f7d2b85 com.tencent.mm}
+  [com.tencent.mm.app.provider.ShareableChatRecords]:
+    Provider{f1f33fd com.tencent.mm/.app.provider.ShareableChatRecordsProvider}
+      applicationInfo=ApplicationInfo{96c3dda com.tencent.mm}
+  [com.tencent.mm.plugin.gamecenter.gameResProvider]:
+    Provider{3012f9 com.tencent.mm/.plugin.game.download.GameResourceDownloadProvider}
+      applicationInfo=ApplicationInfo{e8af20b com.tencent.mm}
+  [com.tencent.mm.ad.waid]:
+    Provider{340e6b7 com.tencent.mm/.plugin.sns.waid.WaidProvider}
+      applicationInfo=ApplicationInfo{66a98e8 com.tencent.mm}
+  [com.tencent.mm.sdk.comm.provider]:
+    Provider{1782e24 com.tencent.mm/.plugin.base.stub.WXCommProvider}
+      applicationInfo=ApplicationInfo{169fb01 com.tencent.mm}
+  [com.tencent.mm.storage.provider.emotion]:
+    Provider{fd6223e com.tencent.mm/.plugin.emoji.provider.EmotionContentProvider}
+      applicationInfo=ApplicationInfo{8605da6 com.tencent.mm}
+  [com.tencent.mm.plugin.ext.SNS]:
+    Provider{2d03dcb com.tencent.mm/.plugin.ext.provider.ExtControlProviderSNS}
+      applicationInfo=ApplicationInfo{1f4a3e7 com.tencent.mm}
+  [com.tencent.mm.androidx-startup]:
+    Provider{a856dec com.tencent.mm/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{ac45b94 com.tencent.mm}
+  [com.tencent.mm.sdk.plugin.provider]:
+    Provider{b1c0890 com.tencent.mm/.plugin.base.stub.MMPluginProvider}
+      applicationInfo=ApplicationInfo{1fa463d com.tencent.mm}
+  [com.tencent.mm.external.recovery.provider]:
+    Provider{aa2398e com.tencent.mm/androidx.core.content.FileProvider}
+      applicationInfo=ApplicationInfo{924ae32 com.tencent.mm}
+  [com.tencent.mm.plugin.ext.message]:
+    Provider{30c609a com.tencent.mm/.plugin.ext.provider.ExtControlProviderMsg}
+      applicationInfo=ApplicationInfo{e5d9783 com.tencent.mm}
+  [com.tencent.mm.recovery.file.provider]:
+    Provider{212cd8d com.tencent.mm/.recovery.RecoveryFileProvider}
+      applicationInfo=ApplicationInfo{4559d00 com.tencent.mm}
+  [com.tencent.mm.AppForegroundDelegate.Provider]:
+    Provider{dbfec66 com.tencent.mm/.app.AppForegroundDelegate$Provider}
+      applicationInfo=ApplicationInfo{c4a0939 com.tencent.mm}
+  [com.tencent.mm.contentprovider.authority.dynamic]:
+    Provider{e244a com.tencent.mm/com.tencent.shadow.core.runtime.container.PluginContainerContentProvider}
+      applicationInfo=ApplicationInfo{56b7b7e com.tencent.mm}
+  [com.tencent.mm.plugin.gwallet.queryprovider]:
+    Provider{ee11dbc com.tencent.mm/.plugin.gwallet.GWalletQueryProvider}
+      applicationInfo=ApplicationInfo{fd828df com.tencent.mm}
+  [com.tencent.mm.sdk.platformtools.MultiProcessSharedPreferences]:
+    Provider{b8059a8 com.tencent.mm/.sdk.platformtools.MultiProcessSharedPreferences}
+      applicationInfo=ApplicationInfo{6f7892c com.tencent.mm}
+  [com.tencent.mm.sdk.xweb.XWebCoreProvider]:
+    Provider{4ce68f2 com.tencent.mm/com.tencent.xweb.XWebCoreContentProvider}
+      applicationInfo=ApplicationInfo{738fff5 com.tencent.mm}
+  [com.tencent.mm.plugin.normsg.NMInfo]:
+    Provider{51ba9b6 com.tencent.mm/.plugin.normsg.NormsgInfoProvider}
+      applicationInfo=ApplicationInfo{dbfd18a com.tencent.mm}
+  [com.tencent.mm.plugin.ext.NearBy]:
+    Provider{db1ad51 com.tencent.mm/.plugin.ext.provider.ExtControlProviderNearBy}
+      applicationInfo=ApplicationInfo{74073fb com.tencent.mm}
+  [com.tencent.mm.provider.expansions]:
+    Provider{d089b43 com.tencent.mm/.plugin.expansions.ExpansionsGlobal$CP}
+      applicationInfo=ApplicationInfo{8ea0c18 com.tencent.mm}
+  [com.tencent.mm.external.fileprovider]:
+    Provider{4cab5c0 com.tencent.mm/android.support.v4.content.FileProvider}
+      applicationInfo=ApplicationInfo{de6a671 com.tencent.mm}
+  [com.tencent.mm.plugin.ext.SearchContact]:
+    Provider{4ebb589 com.tencent.mm/.plugin.ext.provider.ExtControlProviderSearchContact}
+      applicationInfo=ApplicationInfo{e517c56 com.tencent.mm}
+
+Key Set Manager:
+  [com.tencent.mm]
+      Signing KeySets: 67
+
+Packages:
+  Package [com.tencent.mm] (56c6295):
+    appId=10228
+    pccId=-1
+    pkg=Package{96d8faa com.tencent.mm}
+    codePath=/data/app/~~yrZh5yg7MzUcDKU1l0WZqw==/com.tencent.mm-g2LHjc1B_InhOFpglB0Ufw==
+    resourcePath=/data/app/~~yrZh5yg7MzUcDKU1l0WZqw==/com.tencent.mm-g2LHjc1B_InhOFpglB0Ufw==
+    legacyNativeLibraryDir=/data/app/~~yrZh5yg7MzUcDKU1l0WZqw==/com.tencent.mm-g2LHjc1B_InhOFpglB0Ufw==/lib
+    extractNativeLibs=true
+    primaryCpuAbi=arm64-v8a
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=3200 minSdk=24 targetSdk=34
+    minExtensionVersions=[]
+    versionName=8.0.79
+    hiddenApiEnforcementPolicy=2
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA LARGE_HEAP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_REQUEST_LEGACY_EXTERNAL_STORAGE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE ]
+    forceQueryable=false
+    pageSizeCompat=32
+    queriesPackages=[com.tencent.mm.coolassist, cn.cyberIdentity.certification, com.zte.mifavor.launcher, com.google.android.projection.gearhead, com.tencent.mtt, com.tencent.androidqqmail, com.tencent.weishi, com.google.android.apps.maps, com.baidu.BaiduMap, com.autonavi.minimap, com.sogou.map.android.maps, com.tencent.map, com.tencent.weread, com.tencent.mobileqq, com.miui.securitycenter, com.oppo.launcher, com.bbk.launcher2, com.tencent.wework, com.tencent.android.qqdownloader, com.tencent.qqpimsecure, com.tencent.qqpim, com.android.vending, com.google.android.wearable.app.cn, com.google.android.wearable.app, com.unionpay, com.tencent.news, com.xunmeng.pinduoduo, com.smile.gifmaker, com.kuaishou.nebula, com.tencent.wemeet.app, com.wuba.town.client, com.tencent.qqlive, com.tencent.karaoke, com.tencent.tmgp.sgame, com.jingdong.app.mall, com.MobileTicket, tv.danmaku.bili, com.webank.wemoney, com.tencent.mp, com.tencent.qqsports, com.tencent.docs, com.sankuai.meituan, com.baidu.searchbox, com.hicorenational.antifraud, com.xingin.xhs, com.ss.android.ugc.aweme, com.dragon.read, com.tencent.qqgame.xq, com.tencent.gamehelper.smoba, com.tencent.tmgp.cod, com.xunmeng.merchant, com.cctv.yangshipin.app.androidp, com.tencent.tmgp.pubgmhd, com.kugou.android, com.tencent.tmgp.speedmobile, cmb.pb, cn.gov.pbc.dcep, com.tencent.wetype, com.huawei.multimedia.audioengine, com.tencent.soter.soterserver, com.tencent.mm, com.tencent.weworklocal, com.tencent.wwgovernment, com.tencent.wework.special, com.tencent.weworkenterprise, com.hihonor.android.magicx.media.audioengine]
+    queriesIntents=[Intent { act=android.intent.action.VIEW }, Intent { act=com.tencent.wmpf.action.WMPF_SCAN_CODE }, Intent { act=com.tencent.QQBrowser.action.VIEW }, Intent { act=android.intent.action.SEND }, Intent { act=android.intent.action.SEND_MULTIPLE dat=content://*/... typ=application/zip }, Intent { act=android.intent.action.PICK }, Intent { act=android.intent.action.TTS_SERVICE }, Intent { dat=qqmail:/... }, Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] }, Intent { act=android.intent.action.INSERT dat=content://*/... typ=vnd.android.cursor.dir/contact }, Intent { act=android.intent.action.INSERT_OR_EDIT dat=content://*/... typ=vnd.android.cursor.item/person }, Intent { act=android.view.InputMethod }, Intent { act=android.media.action.IMAGE_CAPTURE }, Intent { act=androidx.camera.extensions.action.VENDOR_ACTION }]
+    scannedAsStoppedSystemApp=false
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      org.apache.http.legacy
+      com.sec.android.app.multiwindow
+      android.test.base
+      com.miui.easygo
+      com.hihonor.easygo
+      com.here.android
+      androidx.camera.extensions.impl
+      androidx.window.extensions
+      androidx.window.sidecar
+      com.huawei.easygo
+      soterkeystore
+    usesOptionalNativeLibraries:
+      libcdsprpc.so
+      libOpenCL.so
+    usesLibraryFiles:
+      /system/framework/org.apache.http.legacy.jar
+      /system/framework/android.test.base.jar
+      /system_ext/framework/androidx.window.extensions.jar
+      /system_ext/framework/androidx.window.sidecar.jar
+    timeStamp=2026-10-12 00:39:23
+    lastUpdateTime=2026-10-12 00:39:56
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=com.android.shell
+    originatingPackageName=null
+    packageSource=1
+    appMetadataFilePath=null
+    appMetadataSource=0
+    signatures=PackageSignatures{ce8279b version:2, signatures:[962f5b7], past signatures:[]}
+    installPermissionsFixed=false
+    pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA LARGE_HEAP ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_REQUEST_LEGACY_EXTERNAL_STORAGE HAS_DOMAIN_URLS PARTIALLY_DIRECT_BOOT_AWARE ]
+    apexModuleName=null
+    declared permissions:
+      com.tencent.mm.plugin.permission.WRITE: prot=signature
+      com.tencent.mm.plugin.permission.READ: prot=signature
+      com.tencent.mm.permission.MM_MESSAGE: prot=signature
+      com.tencent.mm.permission.MOVE_XLOG: prot=signature|privileged
+      com.tencent.mm.app.provider.ShareableChatRecords.READ_BY_CONSENT: prot=normal
+      com.tencent.mm.ext.permission.READ: prot=signature|privileged
+      com.tencent.mm.ext.permission.WRITE: prot=signature|privileged
+      com.tencent.mm.ext.permission.SPORT: prot=normal
+      com.tencent.mm.WAID_PROVIDER_WRITE: prot=signature
+      com.tencent.mm.permission.EXT_OPEN_APPBRAND_LAUNCHER_UI: prot=signature
+      com.tencent.mm.permission.EXT_OPEN_APPBRAND_MY_COLLECTIONS: prot=signature
+      com.tencent.mm.matrix.strategynotify: prot=signature
+      com.tencent.mm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+      com.tencent.mm.manual.dump: prot=signature
+      com.tencent.mm.backtrace.warmed_up: prot=signature
+      com.tencent.mm.matrix.permission.PROCESS_SUPERVISOR: prot=signature
+      com.tencent.mm.vfs.broadcast: prot=signature
+      com.tencent.mm.permission.C2D_MESSAGE: prot=signature
+    requested permissions:
+      android.permission.DOWNLOAD_WITHOUT_NOTIFICATION
+      android.permission.FOREGROUND_SERVICE_CAMERA
+      com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE
+      android.permission.FOREGROUND_SERVICE_HEALTH
+      android.permission.POST_NOTIFICATIONS
+      com.google.android.c2dm.permission.RECEIVE
+      com.bbk.launcher2.permission.READ_SETTINGS
+      com.open.gallery.smart.Write
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.MODIFY_AUDIO_SETTINGS
+      freemme.permission.msa
+      android.permission.ACCESS_NOTIFICATION_POLICY
+      com.tencent.mm.WAID_PROVIDER_WRITE
+      com.google.android.providers.gsf.permission.READ_GSERVICES
+      android.permission.ACCESS_LOCAL_NETWORK
+      android.permission.SYSTEM_ALERT_WINDOW
+      com.open.gallery.smart.Provider
+      com.tencent.mm.matrix.strategynotify
+      android.permission.DETECT_SCREEN_CAPTURE
+      android.permission.NFC
+      android.permission.CHANGE_NETWORK_STATE
+      android.permission.FOREGROUND_SERVICE
+      android.permission.READ_MEDIA_VISUAL_USER_SELECTED
+      com.huawei.easygo.permission.READ_PERMISSION
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.FOREGROUND_SERVICE_SPECIAL_USE
+      android.permission.NEARBY_WIFI_DEVICES
+      com.tencent.mm.permission.MM_MESSAGE
+      android.permission.FOREGROUND_SERVICE_LOCATION
+      com.hihonor.security.permission.ACCESS_THREAT_DETECTION
+      com.android.launcher.permission.UNINSTALL_SHORTCUT
+      android.permission.BLUETOOTH_CONNECT
+      android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+      android.permission.BLUETOOTH
+      android.permission.CHANGE_WIFI_MULTICAST_STATE
+      android.permission.GET_TASKS
+      android.permission.INTERNET
+      com.android.vending.CHECK_LICENSE
+      android.permission.REORDER_TASKS
+      com.android.vending.BILLING
+      android.permission.BLUETOOTH_ADMIN
+      android.bluetooth.permissions.SHORTCUT_ACTION
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.GET_PACKAGE_SIZE
+      android.permission.USE_EXACT_ALARM
+      com.tencent.mm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+      com.meizu.flyme.launcher.permission.WRITE_BADGE_EXTRAS
+      com.tencent.mm.plugin.permission.READ
+      android.permission.ACCESS_COARSE_LOCATION
+      com.tencent.mm.ext.permission.WRITE
+      android.permission.HIDE_OVERLAY_WINDOWS
+      android.permission.USE_FULL_SCREEN_INTENT
+      com.android.launcher.permission.READ_SETTINGS
+      android.permission.BROADCAST_STICKY
+      com.open.gallery.smart.Read
+      android.permission.READ_MEDIA_IMAGES
+      com.tencent.bluetooth.permissions.SHORTCUT_ACTION
+      cn.cyberidentity.certification.AUTH
+      android.permission.CHANGE_WIFI_STATE
+      com.tencent.mm.backtrace.warmed_up
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC
+      com.miui.easygo.permission.READ_PERMISSION
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.CAMERA
+      android.permission.INTERACT_ACROSS_USERS
+      android.permission.ALARM_LOCK
+      miui.permission.READ_STEPS
+      com.tencent.mm.permission.C2D_MESSAGE
+      android.permission.READ_MEDIA_VIDEO
+      android.permission.USE_FINGERPRINT
+      com.tencent.mm.matrix.permission.PROCESS_SUPERVISOR
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION
+      android.permission.FOREGROUND_SERVICE_MICROPHONE
+      android.permission.SCHEDULE_EXACT_ALARM
+      com.huawei.authentication.HW_ACCESS_AUTH_SERVICE
+      com.tencent.mm.manual.dump
+      android.permission.BLUETOOTH_ADVERTISE
+      com.tencent.mm.vfs.broadcast
+      android.permission.WRITE_APP_BADGE
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+      com.soter.permission.ACCESS_SOTER_KEYSTORE
+      android.permission.DETECT_SCREEN_RECORDING
+      com.tencent.mm.plugin.permission.WRITE
+      android.permission.VIBRATE
+      com.huawei.android.launcher.permission.CHANGE_BADGE
+      android.permission.SENSOR_GYROSCOPE
+      com.tencent.mm.location.permission.SEND_VIEW
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.USE_BIOMETRIC
+      android.permission.REQUEST_INSTALL_PACKAGES
+      android.permission.ACTIVITY_RECOGNITION
+      com.android.launcher.permission.INSTALL_SHORTCUT
+      com.oplus.permission.safe.FANTASYWINDOW
+      android.permission.RECORD_AUDIO
+      android.permission.WAKE_LOCK
+      android.permission.READ_CONTACTS
+      android.permission.USE_FACERECOGNITION
+      android.permission.BLUETOOTH_SCAN
+      com.tencent.mm.ext.permission.READ
+      android.permission.ACCESS_MEDIA_LOCATION
+    install permissions:
+      android.permission.DOWNLOAD_WITHOUT_NOTIFICATION: granted=true
+      android.permission.FOREGROUND_SERVICE_CAMERA: granted=true
+      com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE: granted=true
+      android.permission.FOREGROUND_SERVICE_HEALTH: granted=true
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+      android.permission.ACCESS_NOTIFICATION_POLICY: granted=true
+      com.tencent.mm.WAID_PROVIDER_WRITE: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+      com.tencent.mm.matrix.strategynotify: granted=true
+      android.permission.DETECT_SCREEN_CAPTURE: granted=true
+      android.permission.NFC: granted=true
+      android.permission.CHANGE_NETWORK_STATE: granted=true
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.FOREGROUND_SERVICE_SPECIAL_USE: granted=true
+      com.tencent.mm.permission.MM_MESSAGE: granted=true
+      android.permission.FOREGROUND_SERVICE_LOCATION: granted=true
+      com.android.launcher.permission.UNINSTALL_SHORTCUT: granted=true
+      android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: granted=true
+      android.permission.BLUETOOTH: granted=true
+      android.permission.CHANGE_WIFI_MULTICAST_STATE: granted=true
+      android.permission.GET_TASKS: granted=true
+      android.permission.INTERNET: granted=true
+      com.android.vending.CHECK_LICENSE: granted=true
+      android.permission.REORDER_TASKS: granted=true
+      com.android.vending.BILLING: granted=true
+      android.permission.BLUETOOTH_ADMIN: granted=true
+      android.permission.GET_PACKAGE_SIZE: granted=true
+      android.permission.USE_EXACT_ALARM: granted=true
+      com.tencent.mm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      com.tencent.mm.plugin.permission.READ: granted=true
+      com.tencent.mm.ext.permission.WRITE: granted=true
+      android.permission.HIDE_OVERLAY_WINDOWS: granted=true
+      android.permission.USE_FULL_SCREEN_INTENT: granted=true
+      android.permission.BROADCAST_STICKY: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      com.tencent.mm.backtrace.warmed_up: granted=true
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      com.tencent.mm.permission.C2D_MESSAGE: granted=true
+      android.permission.USE_FINGERPRINT: granted=true
+      com.tencent.mm.matrix.permission.PROCESS_SUPERVISOR: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION: granted=true
+      android.permission.FOREGROUND_SERVICE_MICROPHONE: granted=true
+      com.tencent.mm.manual.dump: granted=true
+      com.tencent.mm.vfs.broadcast: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK: granted=true
+      android.permission.DETECT_SCREEN_RECORDING: granted=true
+      com.tencent.mm.plugin.permission.WRITE: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.USE_BIOMETRIC: granted=true
+      com.android.launcher.permission.INSTALL_SHORTCUT: granted=true
+      android.permission.WAKE_LOCK: granted=true
+      com.tencent.mm.ext.permission.READ: granted=true
+    User 0: ceDataInode=581665 deDataInode=402241 pccCeDataInode=0 pccDeDataInode=0 installed=true hidden=false suspended=false appLockEnabled=false distractionFlags=0 stopped=true notLaunched=true enabled=0 instant=false virtual=false quarantined=false
+      installReason=0
+      dataDir=/data/user/0/com.tencent.mm
+      firstInstallTime=2026-10-12 00:38:02
+      uninstallReason=0
+      overlay paths:
+        /product/overlay/EmulationPixel9/EmulationPixel9Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+      legacy overlay paths:
+        /product/overlay/EmulationPixel9/EmulationPixel9Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+      gids=[3002, 3003, 3001]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_FINE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_LOCAL_NETWORK: granted=true, flags=[ REVOKE_WHEN_REQUESTED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VISUAL_USER_SELECTED: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.NEARBY_WIFI_DEVICES: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.BLUETOOTH_CONNECT: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_EXTERNAL_STORAGE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED|RESTRICTION_INSTALLER_EXEMPT]
+        android.permission.ACCESS_COARSE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_IMAGES: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_MEDIA_VIDEO: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.BLUETOOTH_ADVERTISE: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACTIVITY_RECOGNITION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.RECORD_AUDIO: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_CONTACTS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.BLUETOOTH_SCAN: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_MEDIA_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+
+Queries:
+  system apps queryable: false
+  queries via forceQueryable:
+  queries via package name:
+    com.tencent.mm:
+      com.google.android.projection.gearhead
+      com.google.android.apps.maps
+  queries via component:
+    com.google.android.as.oss:
+      com.tencent.mm
+    com.google.android.as:
+      com.tencent.mm
+    com.google.android.apps.messaging:
+      com.tencent.mm
+    com.google.android.settings.intelligence:
+      com.tencent.mm
+    com.google.android.apps.docs:
+      com.tencent.mm
+    com.google.android.contacts:
+      com.tencent.mm
+    com.google.android.apps.maps:
+      com.tencent.mm
+    com.google.android.apps.photos:
+      com.tencent.mm
+    com.google.android.gm:
+      com.tencent.mm
+    com.google.android.apps.accessibility.voiceaccess:
+      com.tencent.mm
+    com.google.android.youtube:
+      com.tencent.mm
+    com.google.android.apps.youtube.music:
+      com.tencent.mm
+    ai.mobileagent:
+      com.tencent.mm
+    com.tencent.mm:
+      com.google.android.documentsui
+      com.google.android.projection.gearhead
+      com.google.android.as.oss
+      com.google.android.dialer
+      com.google.android.apps.restore
+      com.google.android.apps.messaging
+      com.google.android.apps.safetyhub
+      com.google.android.googlequicksearchbox
+      com.google.android.calendar
+      com.android.camera2
+      com.android.chrome
+      com.google.android.apps.docs
+      com.google.android.contacts
+      com.google.android.inputmethod.latin
+      com.google.android.apps.maps
+      com.google.android.apps.photos
+      com.google.android.deskclock
+      com.google.android.gm
+      com.google.android.apps.accessibility.voiceaccess
+      com.google.android.youtube
+      com.google.android.apps.youtube.music
+      com.google.android.apps.nexuslauncher
+      com.android.cts.priv.ctsshim
+      com.android.cts.ctsshim
+      com.google.android.cellbroadcastreceiver
+      ai.mobileagent
+      moe.shizuku.privileged.api
+  queryable via interaction:
+    User 0:
+  queryable via uses-library:
+
+Dexopt state:
+  [com.tencent.mm]
+    path: /data/app/~~yrZh5yg7MzUcDKU1l0WZqw==/com.tencent.mm-g2LHjc1B_InhOFpglB0Ufw==/base.apk
+      arm64: [status=verify] [reason=install] [primary-abi]
+        [location is /data/app/~~yrZh5yg7MzUcDKU1l0WZqw==/com.tencent.mm-g2LHjc1B_InhOFpglB0Ufw==/oat/arm64/base.odex]

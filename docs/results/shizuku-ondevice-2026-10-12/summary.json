@@ -1,0 +1,32 @@
+{
+  "environment": "Android 17 API37 arm64 emulator, 16KB pages",
+  "product_on_device_shizuku": true,
+  "physical_device_verified": false,
+  "shizuku_bootstrap": "desktop adb official starter",
+  "runtime_requires_desktop_controller": false,
+  "clock_start_pause_verified": true,
+  "settings_search_back_verified": true,
+  "clock_hidden_screenshot_verified": true,
+  "primary_clock_samples": 20,
+  "primary_settings_samples": 20,
+  "main_screen_target_app_takeover_observed": false,
+  "wechat": {
+    "download_id": 48,
+    "bytes": 285284760,
+    "package": "com.tencent.mm",
+    "version": "8.0.79",
+    "installed_verified_by_package_manager": true
+  },
+  "login_captcha_handoff_implemented": false,
+  "shizuku_unavailable_preflight": {
+    "task_accepted": false,
+    "main_screen_retained": true,
+    "message": "后台执行服务已断开。请启动 Shizuku 后重新发起任务。",
+    "service_restored": true
+  },
+  "checks": {
+    "android_jvm_tests": 52,
+    "node_tests": 56,
+    "debug_build": "passed"
+  }
+}

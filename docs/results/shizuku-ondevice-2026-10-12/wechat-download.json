@@ -1,0 +1,669 @@
+[
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "[COHORT:shizuku-wechat-download-01] 用户要求下载并安装官方微信。发行方 weixin.qq.com 官网当前给出的 Android arm64 APK 地址是 https://dldir1v6.qq.com/weixin/android/weixin8079android3200_0x28004f30_arm64_1.apk 。请用 download_app 下载，用 download_status 读取实际进度。完成后用 install_app 安装，package 必须是 com.tencent.mm，并用工具确认安装结果。不要打开微信登录，不要购买。下载仍在进行时如达到步骤限制，返回 download_id 和真实进度，不要声称安装完成。\n\n<device_state_contract>后台模式遇到登录、验证码、安全页面停止并报告，不要尝试切到主屏。工具返回 SHIZUKU_UNAVAILABLE、SHIZUKU_DIED、SHIZUKU_NOT_AUTHORIZED、DEVICE_LOCKED 或 SCREEN_NOT_INTERACTIVE 时，当前 GUI 任务不能继续；不要重试设备工具。普通任务请提示用户解锁/点亮屏幕；benchmark 只输出所需 JSON，无法读取的字段填 null。</device_state_contract>"
+      }
+    ],
+    "timestamp": 1791736624662
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_0_4cc71758",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_app",
+          "params": {
+            "url": "https://dldir1v6.qq.com/weixin/android/weixin8079android3200_0x28004f30_arm64_1.apk"
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1366,
+      "output": 108,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1474,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736628494
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_0_4cc71758",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"pending\",\"bytes_downloaded\":0,\"bytes_total\":-1,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"pending\",\"bytes_downloaded\":0,\"bytes_total\":-1,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736628701
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_1_9545a2d9",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1528,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1602,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736633183
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_1_9545a2d9",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":14015395,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":14015395,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736633794
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_2_8e19c68e",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1663,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1737,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736638061
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_2_8e19c68e",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":29776803,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":29776803,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736638160
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_3_46fd2423",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1798,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 1872,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736642451
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_3_46fd2423",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":54401955,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":54401955,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736642503
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_4_0114cdcb",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 1933,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2007,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736647022
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_4_0114cdcb",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":90233763,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":90233763,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736647070
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_5_9ab83a2c",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2068,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2142,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736649672
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_5_9ab83a2c",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":123771811,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":123771811,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736649723
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_6_faf15aba",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2203,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2277,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736654150
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_6_faf15aba",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":157096867,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":157096867,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736654205
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_7_79db7aba",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2338,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2412,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736657192
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_7_79db7aba",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":174906275,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":174906275,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736657250
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_8_83c3dc39",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2473,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2547,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736661614
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_8_83c3dc39",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":231381923,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":231381923,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736661664
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_9_ca1ff670",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2608,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2682,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736665671
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_9_ca1ff670",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":269433763,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloading\",\"bytes_downloaded\":269433763,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736665737
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "toolCall",
+        "id": "device_invoke_10_85963c5e",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "download_status",
+          "params": {
+            "download_id": 48
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2743,
+      "output": 74,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2817,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736669938
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_10_85963c5e",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"download_id\":48,\"status\":\"downloaded\",\"bytes_downloaded\":285284760,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}"
+      }
+    ],
+    "details": {
+      "json": "{\"download_id\":48,\"status\":\"downloaded\",\"bytes_downloaded\":285284760,\"bytes_total\":285284760,\"reason\":0,\"installed\":false}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736669945
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "下载完成（285284760/285284760 字节），开始安装："
+      },
+      {
+        "type": "toolCall",
+        "id": "device_invoke_11_cbfabfb7",
+        "name": "device_invoke",
+        "arguments": {
+          "capability": "install_app",
+          "params": {
+            "download_id": 48,
+            "package": "com.tencent.mm"
+          }
+        }
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 2878,
+      "output": 96,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 2974,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "toolUse",
+    "timestamp": 1791736674782
+  },
+  {
+    "role": "toolResult",
+    "toolCallId": "device_invoke_11_cbfabfb7",
+    "toolName": "device_invoke",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"installed\":true,\"package\":\"com.tencent.mm\",\"version\":\"8.0.79\"}"
+      }
+    ],
+    "details": {
+      "json": "{\"installed\":true,\"package\":\"com.tencent.mm\",\"version\":\"8.0.79\"}",
+      "isError": false
+    },
+    "isError": false,
+    "timestamp": 1791736702290
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "任务完成：\n\n- **下载**：download_id 48，285284760/285284760 字节，100% 完成\n- **安装**：成功，包名 `com.tencent.mm`，版本 8.0.79\n- 未打开微信，未进行登录或购买操作"
+      }
+    ],
+    "api": "mobile-native",
+    "provider": "mobile-native",
+    "model": "kimi-k3",
+    "usage": {
+      "input": 3020,
+      "output": 76,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 3096,
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0
+      }
+    },
+    "stopReason": "stop",
+    "timestamp": 1791736706875
+  }
+]

@@ -203,14 +203,16 @@ function createMobileTools(callNative: MobileNativeCall): AgentTool[] {
     {
       name: "device_invoke",
       label: "调用系统能力",
-      description: "通过平台公开能力调用系统动作。open_app 使用 params.package 或 params.app；URL/深链用 params.url；导航用 destination；Shortcut 用 name。",
+      description: "通过平台公开能力调用系统动作。open_app 使用 params.package 或 params.app；URL/深链用 params.url；导航用 destination；Shortcut 用 name。安卓下载应用：download_app(params.url，发行方 HTTPS APK) 返回 download_id；download_status(params.download_id) 查询进度；downloaded 后 install_app(params.download_id, params.package) 校验包名并安装，需要 Shizuku。遇到登录或验证码立即停止，不要切主屏。",
       parameters: Type.Object({
         capability: Type.Union([
           Type.Literal("open_app"), Type.Literal("open_url"), Type.Literal("deep_link"),
           Type.Literal("open_settings"), Type.Literal("navigate"), Type.Literal("dial"),
           Type.Literal("share"), Type.Literal("run_shortcut"),
+          Type.Literal("download_app"), Type.Literal("download_status"), Type.Literal("install_app"),
         ]),
         params: Type.Object({
+          download_id: Type.Optional(Type.Integer({ minimum: 1 })),
           package: Type.Optional(Type.String()),
           app: Type.Optional(Type.String()),
           url: Type.Optional(Type.String()),

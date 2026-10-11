@@ -115,7 +115,7 @@ class BenchmarkRunStore private constructor(
             .put("runtime_carrier", "quickjs-kt@1.0.12")
             .put("model", model)
             .put("model_endpoint_host", modelEndpointHost)
-            .put("backend", "android_accessibility_foreground")
+            .put("backend", if (ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(context)) "android_virtualdisplay_shizuku" else "android_accessibility_foreground")
             .put("task_id", taskId)
             .put("benchmark_cohort", benchmarkCohort)
             .put("attempt", attempt)

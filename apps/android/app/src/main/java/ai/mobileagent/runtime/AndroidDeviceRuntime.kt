@@ -15,10 +15,14 @@ import org.json.JSONObject
 import org.json.JSONArray
 
 class AndroidDeviceRuntime(private val context: Context) {
+    private val hidden = if (ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(context)) ai.mobileagent.virtualdisplay.HiddenExecutionSession(context) else null
+    private suspend fun executionDisplay() = hidden?.start() ?: 0
+    fun close() { hidden?.close() }
+
     suspend fun approvalArguments(name: String, arguments: JSONObject): JSONObject {
         if (name != "device_act" || arguments.optString("action") !in setOf("click", "long_press")) return arguments
         requireUiAvailable()
-        val target = awaitAccessibilityService().approvalTarget(arguments)
+        val target = awaitAccessibilityService().approvalTarget(arguments, executionDisplay())
         return JSONObject(arguments.toString()).put("target", target)
     }
 
@@ -27,8 +31,14 @@ class AndroidDeviceRuntime(private val context: Context) {
         "device_act" -> {
             requireUiAvailable()
             val service = awaitAccessibilityService()
-            val observation = service.act(arguments)
-            ToolExecution(observation.toJson().toString(), observation.screenshotDataUrl)
+            val displayId = executionDisplay()
+            val action = arguments.optString("action")
+            val observation = if (hidden != null && action in setOf("back", "home")) {
+                hidden.key(if (action == "back") android.view.KeyEvent.KEYCODE_BACK else android.view.KeyEvent.KEYCODE_HOME)
+                delay(700)
+                service.observe(arguments.optBoolean("include_screen", false), displayId)
+            } else service.act(arguments, displayId)
+            ToolExecution(observation.toJson().put("display_id", displayId).put("execution_mode", if (hidden != null) "hidden" else "foreground").toString(), observation.screenshotDataUrl)
         }
         "device_invoke" -> invoke(arguments)
         else -> error("UNKNOWN_TOOL: $name")
@@ -36,10 +46,12 @@ class AndroidDeviceRuntime(private val context: Context) {
 
     private suspend fun observe(includeScreen: Boolean, includeApps: Boolean = false): ToolExecution {
         val service = awaitAccessibilityService()
-        val observation = service.observe(includeScreen)
+        val observation = service.observe(includeScreen, executionDisplay())
         val interactive = context.getSystemService(PowerManager::class.java).isInteractive
         val locked = context.getSystemService(KeyguardManager::class.java).isDeviceLocked
         val json = observation.toJson()
+            .put("display_id", hidden?.displayId ?: 0)
+            .put("execution_mode", if (hidden != null) "hidden" else "foreground")
             .put("device_state", JSONObject()
                 .put("screen_interactive", interactive)
                 .put("device_locked", locked))
@@ -76,8 +88,28 @@ class AndroidDeviceRuntime(private val context: Context) {
         requireUiAvailable()
         val capability = arguments.getString("capability")
         val params = arguments.optJSONObject("params") ?: JSONObject()
+        val downloads = AppDownloads(context)
+        when (capability) {
+            "download_app" -> return ToolExecution(downloads.download(params).toString())
+            "download_status" -> return ToolExecution(downloads.status(params.getLong("download_id")).toString())
+            "install_app" -> {
+                val id = params.getLong("download_id")
+                check(downloads.status(id).getString("status") == "downloaded") { "DOWNLOAD_NOT_READY" }
+                val file = downloads.file(id)
+                val archive = context.packageManager.getPackageArchiveInfo(file.absolutePath, 0) ?: error("INVALID_APK")
+                val expected = params.getString("package")
+                check(archive.packageName == expected) { "APK_PACKAGE_MISMATCH" }
+                check(hidden != null) { "INSTALL_REQUIRES_SHIZUKU_MODE" }
+                executionDisplay()
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    android.os.ParcelFileDescriptor.open(file, android.os.ParcelFileDescriptor.MODE_READ_ONLY).use { hidden.install(it, file.length()) }
+                }
+                val installed = context.packageManager.getPackageInfo(expected, 0)
+                return ToolExecution(JSONObject().put("installed", true).put("package", installed.packageName).put("version", installed.versionName).toString())
+            }
+        }
         val launchPackage = if (capability == "open_app") resolveLaunchPackage(params) else null
-        if (capability == "open_app" && Build.VERSION.SDK_INT >= 33) {
+        if (hidden == null && capability == "open_app" && Build.VERSION.SDK_INT >= 33) {
             val packageName = launchPackage!!
             runCatching {
                 context.packageManager.getLaunchIntentSenderForPackage(packageName)
@@ -100,7 +132,7 @@ class AndroidDeviceRuntime(private val context: Context) {
             else -> error("UNSUPPORTED_CAPABILITY: $capability")
         }.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         params.optString("package").takeIf { it.isNotBlank() && capability != "open_app" }?.let(intent::setPackage)
-        context.startActivity(intent)
+        if (hidden != null) { executionDisplay(); hidden.launch(intent) } else context.startActivity(intent)
         delay(900)
         return observe(arguments.optBoolean("include_screen", false))
     }

@@ -164,6 +164,10 @@ object QuickJsPiAgentRunner {
             } else run.runtime.execute(name, arguments)
         }
             .getOrElse { ToolExecution(JSONObject().put("error", it.message ?: "TOOL_FAILED").toString()) }
+        if (ai.mobileagent.BuildConfig.DEBUG) {
+            val summary = JSONObject(execution.json)
+            Log.i("MobileAgentTool", "$name capability=${arguments.optString("capability")} error=${summary.optString("error").take(250)} status=${summary.optString("status")} download=${summary.optLong("download_id")} installed=${summary.optBoolean("installed")}")
+        }
         run.metrics.recordTool(name, arguments, execution)
         run.metrics.failureStage = null
         return successResponse(

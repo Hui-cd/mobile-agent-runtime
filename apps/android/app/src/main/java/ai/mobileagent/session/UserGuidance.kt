@@ -20,6 +20,9 @@ object UserGuidance {
             "navigate" -> "正在打开导航"
             "dial" -> "正在打开拨号界面"
             "share" -> "正在打开分享面板"
+            "download_app" -> "正在下载应用"
+            "download_status" -> "正在检查下载进度"
+            "install_app" -> "正在校验和安装应用"
             else -> "正在调用手机功能"
         }
         else -> "正在处理任务"
@@ -32,6 +35,9 @@ object UserGuidance {
     }
 
     fun error(message: String?): String = when {
+        message.orEmpty().contains("HIDDEN_EXECUTION_REQUIRES_ANDROID_14") -> "后台执行目前需要 Android 14 或更新版本。"
+        message.orEmpty().contains("SHIZUKU_NOT_AUTHORIZED") -> "请从菜单开启后台执行，并授权 Shizuku。"
+        message.orEmpty().contains("SHIZUKU") -> "后台执行服务已断开。请启动 Shizuku 后重新发起任务。"
         message.orEmpty().contains("DEVICE_LOCKED") -> "手机已锁定。请解锁后重新发起任务。"
         message.orEmpty().contains("SCREEN_NOT_INTERACTIVE") -> "屏幕已关闭。请点亮并解锁手机后重试。"
         message.orEmpty().contains("ACCESSIBILITY") -> "设备控制暂时不可用。请检查系统无障碍设置，然后重试。"

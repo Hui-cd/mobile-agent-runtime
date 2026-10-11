@@ -44,6 +44,13 @@ object AgentSession {
         val key = ApiKeyStore(appContext).load()
         val notReady = UserGuidance.readiness(!key.isNullOrBlank(), AccessibilityBridge.isEnabled(appContext), AgentForegroundService.notificationsAvailable(appContext))
         if (notReady != null) return reject(notReady)
+        if (ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(appContext)) {
+            val readiness = runCatching {
+                val running = rikka.shizuku.Shizuku.pingBinder()
+                ai.mobileagent.virtualdisplay.ShizukuAccessPolicy.requireConnectable(android.os.Build.VERSION.SDK_INT, running, running && rikka.shizuku.Shizuku.checkSelfPermission() == android.content.pm.PackageManager.PERMISSION_GRANTED)
+            }.exceptionOrNull()
+            if (readiness != null) return reject(UserGuidance.error(readiness.message))
+        }
         if (appContext.getSystemService(KeyguardManager::class.java).isDeviceLocked) return reject(UserGuidance.error("DEVICE_LOCKED"))
         if (!appContext.getSystemService(PowerManager::class.java).isInteractive) return reject(UserGuidance.error("SCREEN_NOT_INTERACTIVE"))
         try {
@@ -56,18 +63,19 @@ object AgentSession {
         val endpoint = ModelEndpointStore(appContext).load()
         val benchmarkRun = BenchmarkRunStore.start(appContext, prompt, metrics, endpoint.model, endpoint.host)
         val benchmarkMode = prompt.startsWith("[BENCH:")
-        val deviceStateContract = "<device_state_contract>工具返回 DEVICE_LOCKED 或 SCREEN_NOT_INTERACTIVE 时，当前 GUI 任务不能继续；不要重试设备工具。普通任务请提示用户解锁/点亮屏幕；benchmark 只输出所需 JSON，无法读取的字段填 null。</device_state_contract>"
+        val deviceStateContract = "<device_state_contract>后台模式遇到登录、验证码、安全页面停止并报告，不要尝试切到主屏。工具返回 SHIZUKU_UNAVAILABLE、SHIZUKU_DIED、SHIZUKU_NOT_AUTHORIZED、DEVICE_LOCKED 或 SCREEN_NOT_INTERACTIVE 时，当前 GUI 任务不能继续；不要重试设备工具。普通任务请提示用户解锁/点亮屏幕；benchmark 只输出所需 JSON，无法读取的字段填 null。</device_state_contract>"
         val runtimePrompt = if (benchmarkMode) "$prompt\n\n<benchmark_contract>最终只输出合法 JSON，不要 Markdown，不要代码围栏，不要解释执行过程；第一个字符必须是 {，最后一个字符必须是 }，前后不得有其他文字；字段和数量严格遵守任务中给出的结构。</benchmark_contract>\n$deviceStateContract"
         else "$prompt\n\n$deviceStateContract"
         _state.value = _state.value.copy(running = true, status = AgentStatus.THINKING, error = null, currentStep = "正在读取当前页面")
         add(MessageRole.USER, prompt)
         job = scope.launch {
+            val runtime = AndroidDeviceRuntime(appContext)
             try {
                 val transcriptStore = appContext.getSharedPreferences("pi-agent-session", Context.MODE_PRIVATE)
                 val result = QuickJsPiAgentRunner.run(
                     context = appContext,
                     client = OpenAICompatibleClient(key!!, endpoint, appContext),
-                    runtime = AndroidDeviceRuntime(appContext),
+                    runtime = runtime,
                     prompt = runtimePrompt,
                     messagesJson = if (benchmarkMode || freshSession) null else sessionMessagesJson,
                     metrics = metrics,
@@ -117,6 +125,8 @@ object AgentSession {
                     currentStep = "任务失败",
                     approval = null,
                 )
+            } finally {
+                runtime.close()
             }
         }
         return true

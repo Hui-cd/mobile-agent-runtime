@@ -82,11 +82,13 @@ class MainActivity : ComponentActivity() {
     }
     private var accessibilityEnabled by mutableStateOf(false)
     private var notificationsEnabled by mutableStateOf(true)
+    private var hiddenEnabled by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         refreshNotificationAccess()
+        hiddenEnabled = ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(this)
         val endpointStore = ModelEndpointStore(this)
         setContent {
             MaterialTheme { MobileAgentScreen(
@@ -94,6 +96,7 @@ class MainActivity : ComponentActivity() {
                 initialEndpoint = endpointStore.load(),
                 accessibilityConnected = accessibilityEnabled,
                 notificationsEnabled = notificationsEnabled,
+                hiddenEnabled = hiddenEnabled,
                 onSaveConfiguration = { key, baseUrl, model ->
                     runCatching {
                         val endpoint = ModelEndpoint.parse(baseUrl, model)
@@ -106,6 +109,21 @@ class MainActivity : ComponentActivity() {
                 onOpenNotifications = { openNotificationSettings() },
                 onRun = { AgentSession.start(this, it) },
                 onExportBenchmark = { shareBenchmark() },
+                onToggleHidden = {
+                    val enabled = ai.mobileagent.virtualdisplay.HiddenExecutionSession.enabled(this)
+                    if (!enabled && !rikka.shizuku.Shizuku.pingBinder()) {
+                        Toast.makeText(this, "请先在 Shizuku 中启动服务", Toast.LENGTH_LONG).show()
+                        packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")?.let { startActivity(it) }
+                    } else if (!enabled && rikka.shizuku.Shizuku.checkSelfPermission() != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        rikka.shizuku.Shizuku.requestPermission(100)
+                        Toast.makeText(this, "授权后再次点后台执行", Toast.LENGTH_LONG).show()
+                    } else {
+                        ai.mobileagent.virtualdisplay.HiddenExecutionSession.setEnabled(this, !enabled)
+                        hiddenEnabled = !enabled
+                        AgentSession.newTask()
+                        Toast.makeText(this, if (!enabled) "已开启后台执行（Shizuku）" else "已切回主屏执行", Toast.LENGTH_LONG).show()
+                    }
+                },
             ) }
         }
         PiCoreFixtureRunner.start(this)
@@ -166,11 +184,13 @@ private fun MobileAgentScreen(
     initialEndpoint: ModelEndpoint,
     accessibilityConnected: Boolean,
     notificationsEnabled: Boolean,
+    hiddenEnabled: Boolean,
     onSaveConfiguration: (String, String, String) -> String?,
     onOpenAccessibility: () -> Unit,
     onOpenNotifications: () -> Unit,
     onRun: (String) -> Boolean,
     onExportBenchmark: () -> Unit,
+    onToggleHidden: () -> Unit,
 ) {
     val state by AgentSession.state.collectAsState()
     var configured by remember { mutableStateOf(keyConfigured) }
@@ -200,6 +220,7 @@ private fun MobileAgentScreen(
                     configurationError = null
                     editingConfiguration = true
                 })
+                DropdownMenuItem(text = { Text(if (hiddenEnabled) "后台执行已开启 · 切回主屏" else "开启后台执行（Shizuku）") }, enabled = !state.running, onClick = { menuOpen = false; onToggleHidden() })
                 DropdownMenuItem(text = { Text("导出诊断记录") }, onClick = { menuOpen = false; onExportBenchmark() })
             }
         },
@@ -309,7 +330,7 @@ private fun MobileAgentScreen(
                     }
                 } else {
                     Text(
-                        "操作时会切到目标应用。你可以从通知停止任务。",
+                        if (hiddenEnabled) "后台操作已开启，主屏可继续使用。可从通知停止任务。" else "操作时会切到目标应用。你可以从通知停止任务。",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 8.dp),

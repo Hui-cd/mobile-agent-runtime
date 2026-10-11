@@ -1,0 +1,51 @@
+{
+  "environment": "emulator",
+  "dev_only": true,
+  "product_integrated": false,
+  "on_device_shizuku_verified": false,
+  "bootstrap": "desktop adb + scrcpy shell server",
+  "shell_uid": 2000,
+  "android_sdk": 37,
+  "android_release": "17",
+  "fingerprint": "google/sdk_gphone16k_arm64/emu64a16k:17/CP21.260330.012/15545953:user/dev-keys",
+  "scrcpy_version": "5.0.1",
+  "scrcpy_tag_object": "a0c27ff382c411af1301dcc1cd8205c9aeb81996",
+  "scrcpy_macos_release_sha256": "33611e51977a8289e2e124b220f727895181ef2eb9060e0987a4dc2db9cf0d6b",
+  "small_display": {
+    "display_id": 2,
+    "size": [
+      720,
+      1280
+    ],
+    "dpi": 240,
+    "clock_tab_before": "Alarm",
+    "clock_tab_after": "Stopwatch",
+    "primary_app": "ai.mobileagent",
+    "primary_content_pixel_change_excluding_system_bars": false,
+    "primary_menu_interaction": true,
+    "ime_display_id": 2,
+    "youtube_same_task_moved": 112,
+    "sign_in_page_preserved_on_handoff": false
+  },
+  "equal_display": {
+    "before_sign_in": true,
+    "handoff_sign_in": true,
+    "returned_sign_in": true,
+    "task_id": 119,
+    "hidden_display_id": 3,
+    "primary_display_id": 0,
+    "size": [
+      1080,
+      2424
+    ],
+    "dpi": 420
+  },
+  "limits": [
+    "No Google credentials entered",
+    "No CAPTCHA tested",
+    "No real device tested",
+    "No screen-off or lock-screen tested",
+    "No App Agent integration; host-driven mechanism experiment",
+    "scrcpy defaults include ALWAYS_UNLOCKED; no lock claims and flags not adopted as product policy"
+  ]
+}

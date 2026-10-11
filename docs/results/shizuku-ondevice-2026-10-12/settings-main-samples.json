@@ -1,0 +1,141 @@
+[
+  {
+    "at": 1791736822.2880871,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736824.352614,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736826.410669,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736828.4662468,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736830.5153449,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736832.538365,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736834.5975091,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736836.656565,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736838.7158551,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736840.774613,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736842.843169,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736844.930892,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736846.988118,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736849.045303,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{267546386 u0 com.google.android.settings.intelligence/.modules.search.SearchActivity t129}"
+    }
+  },
+  {
+    "at": 1791736851.14289,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736853.200902,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736855.254028,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736857.309482,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736859.367738,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}",
+      "10": "topResumedActivity=ActivityRecord{71618106 u0 com.android.settings/.homepage.SettingsHomepageActivity t129}"
+    }
+  },
+  {
+    "at": 1791736861.430561,
+    "resumed": {
+      "0": "topResumedActivity=ActivityRecord{77131309 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}"
+    }
+  }
+]

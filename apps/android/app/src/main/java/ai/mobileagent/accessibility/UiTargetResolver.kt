@@ -38,6 +38,14 @@ object UiTargetResolver {
         return actionable.single()
     }
 
+    fun validateTargetObservation(expectedId: String?, previousId: String?, previous: List<UiNodeSnapshot>?, current: List<UiNodeSnapshot>, target: JSONObject, action: String) {
+        if (expectedId == null) return
+        check(expectedId == previousId && previous != null) { "STALE_OBSERVATION: observe again" }
+        val before = resolve(previous, target, action)
+        val now = resolve(current, target, action)
+        check(before.toJson().toString() == now.toJson().toString()) { "STALE_OBSERVATION: target changed; observe again" }
+    }
+
     fun validateObservation(expectedId: String?, previousId: String?, previous: List<UiNodeSnapshot>?, current: List<UiNodeSnapshot>) {
         if (expectedId == null) return
         check(expectedId == previousId && previous != null &&

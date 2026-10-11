@@ -1,95 +1,308 @@
+<div align="center">
+
 # Mobile Agent Runtime
 
-一个直接运行在 Android 手机上的开源 Agent Runtime。Agent 循环、会话、工具执行与安全控制位于设备端；模型推理可以使用用户自己的远程 API。
+**Give your Android phone a task.**
 
-当前先稳定通用工具使用，再逐步增量，之后接入飞书、微信等通讯入口。仓库中的 iOS 实现与研究保留作历史工作，不属于当前产品迭代范围。
+An open-source agent that reads app screens and operates Android apps from your instructions.
 
-> 当前状态：**Technical Alpha**。Android 核心链路已在模拟器验证，尚未完成 Android 真机与目标 App 的产品级验证。请勿用于支付、发送、删除等高风险任务。
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-## 它解决什么问题
+![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
+![Alpha](https://img.shields.io/badge/status-alpha-orange)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
-用户描述目标后，Agent 通过三个稳定工具完成“判断 → 调用 App → 观察结果 → 继续或结束”的闭环：
+</div>
 
-- `device_observe`：读取当前 App 与语义 UI；
-- `device_invoke`：通过 Intent、URL 或系统能力直接调用 App；
-- `device_act`：在必须操作界面时点击、输入、滚动或返回。
+Describe the result you want. The agent opens an app, reads the screen, and selects the next action.
+It checks the screen after each action and returns the result in the same conversation.
 
-Android 优先使用 Intent，再使用 Accessibility；每次动作后重新观察设备，不能仅凭模型自报判定完成。运行中的任务有持续通知和停止入口，风险动作会要求用户确认。
+The agent runs on your phone. You supply a model API key for remote model requests.
+With Shizuku, task apps can run on a separate display while you use the main screen.
 
-## 当前能力
+> **Alpha:** Clock, Settings, and app installation have passed emulator checks. Physical phone compatibility and login handoff need further work.
 
-| 平台 | 当前能力 | 验证边界 |
-|---|---|---|
-| Android | 手机内 Pi agent loop、Intent、Accessibility、前台服务、BYOK、安全存储 | Clock/Chrome 模拟器基线已通过；尚无 Android 真机产品基线 |
-| iOS | 手机内 Pi agent loop、App Intents、Shortcuts、URL/Share API | 公开 URL 真机基线已通过；公共 API 不支持任意第三方 App GUI 控制 |
-| Desktop | MCP Runtime、ADB/UIAutomator、可选 BYOK Gateway | 开发与测试工具，不属于手机端产品运行链路 |
+## See it in use
 
-## 在 Android 上运行
+<p align="center">
+  <img src="docs/results/shizuku-ondevice-2026-10-12/ready-hidden-mode.png" width="240" alt="Mobile Agent with background mode enabled">
+  &nbsp;&nbsp;
+  <img src="docs/results/shizuku-ondevice-2026-10-12/clock-screenshot-10-1.jpg" width="240" alt="Clock on the separate display, with the stopwatch paused at 5:09.85">
+</p>
 
-要求：Node.js 22+、JDK 17+、Android 17 Preview SDK（API 37）、Android 11+ 手机或模拟器。API 37 目前属于 preview channel；可在 Android Studio SDK Manager 中安装。真机还需开启开发者选项和 USB 调试。
+<p align="center">App interface · Clock on the separate display</p>
+
+Try these tasks:
+
+```text
+Open Clock. Start the stopwatch, then pause it. Tell me the elapsed time.
+
+Open Settings. Search for bluetooth. Read the first three results, then return to the main settings page.
+
+Download the official WeChat APK from the publisher URL I provide. Install it, but do not log in.
+```
+
+These tasks use the same tools. The runtime does not contain a separate action script for each app.
+Clock tasks started and paused the stopwatch. Settings tasks entered a search term and returned to the main page.
+An installation task downloaded the official WeChat APK and installed version 8.0.79.
+
+## What you can do
+
+- **Operate apps from a goal.** Open apps, select controls, enter text, scroll, and return to the previous page.
+- **Read screens.** Use app controls and screenshots to inspect the current page.
+- **Keep the main screen available.** Use Shizuku to run a task app on a separate display.
+- **Download and install apps.** Download an APK, read its progress, check its package name, and install it through Shizuku.
+- **Choose a model service.** Use an HTTPS service with OpenAI-compatible Chat Completions and tool calling.
+- **Stop a task.** Use the stop button in the app or its task notification.
+
+App support depends on the controls each app exposes. A task can stop when a page, permission, or account prevents progress.
+
+## Quick start
+
+### 1. Prepare your environment
+
+| Item | Requirement |
+|---|---|
+| Phone or emulator | Android 11 or later for foreground mode |
+| Background mode | Android 14 or later, with Shizuku running and authorized |
+| Node.js | Version 22 or later |
+| Java | JDK 17 or later |
+| Android SDK | Platform API 37 and build tools 37.0.0 |
+| Model service | HTTPS Chat Completions API with tool calling |
+
+Install [Android Studio](https://developer.android.com/studio).
+Use SDK Manager to install the required platform, build tools, and platform tools.
+Set `ANDROID_HOME` to your SDK directory.
+Add the SDK `platform-tools` directory to your `PATH`.
+
+On macOS, Android Studio commonly uses these paths:
+
+```bash
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+```
+
+On other systems, use the SDK and Java paths for your installation.
+
+### 2. Build the app
 
 ```bash
 git clone https://github.com/Hui-cd/mobile-agent-runtime.git
 cd mobile-agent-runtime
 npm ci
 npm run android:build
+```
+
+The build creates this APK:
+
+```text
+apps/android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### 3. Install the app
+
+For a phone, enable USB debugging in Developer options.
+Connect the phone to your computer.
+Accept the USB debugging request on the phone.
+
+For an emulator, create a device in Android Studio Device Manager.
+Start the device before you install the APK.
+
+```bash
+adb devices
 adb install -r apps/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-中国大陆网络访问 Google/Maven Central 较慢时，可在构建命令前设置 `MOBILE_AGENT_USE_HUAWEI_MIRROR=1` 启用华为云镜像。
+If ADB lists multiple devices, use `adb -s <serial> install -r <apk-path>` to select one.
 
-首次打开后：
+### 4. Configure the app
 
-1. 配置一个支持 OpenAI-compatible Chat Completions 与 Tool Calling 的 HTTPS endpoint、模型和 API Key；默认值是 Kimi 中国区 `https://api.moonshot.cn/v1` / `kimi-k3`。
-2. 按提示在 Android 无障碍设置中启用 `Mobile Agent device control`。
-3. 先用低风险任务验证，例如“打开时钟，进入闹钟页面，告诉我有哪些闹钟”。
+1. Open **Mobile Agent**.
+2. Enter your model API key.
+3. Save the model settings.
+4. Enable **Mobile Agent device control** in Android Accessibility settings.
+5. Allow notifications for Mobile Agent.
+6. Keep the screen on and the device unlocked.
+7. Enter a task from the examples above.
 
-API Key 通过 Android Keystore 加密，只保存在设备上。界面控制会让目标 App 出现在前台；网络推理可在后台继续。
+The default model service is Kimi:
 
-## 验证源码
+| Setting | Default |
+|---|---|
+| Base URL | `https://api.moonshot.cn/v1` |
+| Model | `kimi-k3` |
+
+Use the advanced model settings to change the base URL or model.
+The app uses Android Keystore to encrypt the saved API key.
+Model requests send task content, screen text, and requested screenshots to your selected model service.
+
+Without background mode, the agent brings the task app to the main screen.
+You can stop the task from its notification.
+
+## Run tasks in background mode
+
+Background mode places the task app on a separate Android display.
+The agent reads and operates that display. You can use a different app on the main screen.
+
+1. Install [Shizuku](https://shizuku.rikka.app/download/).
+2. Start Shizuku with its [setup instructions](https://shizuku.rikka.app/guide/setup/).
+3. Open Mobile Agent.
+4. Open the app menu.
+5. Select **开启后台执行（Shizuku）** to enable background mode.
+6. Allow Mobile Agent to access Shizuku.
+7. Select the background mode option again after the first authorization.
+8. Enter your task.
+
+The menu shows the active mode.
+The app also shows a background mode message above the task input.
+To use the main screen for tasks again, select **后台执行已开启 · 切回主屏** from the menu.
+
+Task operations run on the device. They do not require a desktop control process after Shizuku starts.
+Our emulator checks used ADB to start Shizuku. Wireless startup from the phone still needs a device check.
+
+Keep the screen on and the device unlocked.
+Do not operate the same task app on the main screen at the same time.
+An app or a system dialog can still move to the main screen.
+After a reboot, start Shizuku again if the service has stopped.
+
+## App downloads
+
+Give the agent an APK address from the app publisher and the expected package name.
+For example, the WeChat package name is `com.tencent.mm`.
+
+The agent can download the file and read its progress.
+Before installation, it checks the APK package name against the requested name.
+Installation requires background mode and Shizuku authorization.
+
+A completed download does not mean installation is complete.
+The runtime reports installation success only after the system installs and identifies the package.
+It checks the package name, but it does not authenticate the publisher through a separate signature check.
+
+Google Play can require a Google account.
+Login and CAPTCHA handoff are not available in this version.
+
+## Feishu and WeChat control
+
+The intended workflow starts with a task in a chat. The phone performs the task and returns the result there.
+
+| Entry point | Current support |
+|---|---|
+| Mobile Agent app | App tasks and results on the device |
+| Feishu bot | Development bridge for Clock, status, and stop commands |
+| WeChat chat | Planned |
+
+The Feishu bridge runs on a computer and uses ADB to send tasks to the emulator.
+It does not yet provide an independent phone connection.
+Live Feishu message delivery still needs an account check.
+
+To prepare a development bot:
+
+1. Create a Feishu application with a bot.
+2. Enable permissions to receive private messages and send bot messages.
+3. Select the long connection option for events.
+4. Subscribe to `im.message.receive_v1`.
+5. Publish the application to your permitted users.
+
+For development, copy `.env.feishu.example` to `.env.feishu`.
+Enter your bot credentials and the permitted user ID.
+Then start the bridge:
 
 ```bash
-npm ci
+npm run channel:feishu:dev
+```
+
+Supported chat commands are `/clock`, `/status`, and `/stop`.
+The bridge does not accept unrestricted app tasks.
+Installing WeChat does not enable control through WeChat chats.
+
+## No Android phone?
+
+Use an emulator to start.
+Create an Android 17 device in Android Studio Device Manager to match the environment used for current checks.
+An Android 14 or later emulator can attempt background mode, but compatibility can differ.
+
+Start your virtual device from Device Manager.
+You can also list and start devices from the terminal:
+
+```bash
+emulator -list-avds
+emulator -avd <avd-name> -no-snapshot-save
+```
+
+Install the APK with the quick start steps.
+Configure the model and permissions inside the emulator.
+An emulator requires its own app installation and account setup.
+It does not contain the apps or accounts from your phone.
+
+## How it works
+
+```text
+Your goal
+   ↓
+Agent on the phone ↔ Your model service
+   ↓
+Observe → Choose an action → Operate → Observe again
+   ↓
+Result or a request for your help
+```
+
+The runtime gives the model three tools:
+
+| Tool | Function |
+|---|---|
+| `device_observe` | Read the current app, controls, and requested screenshot |
+| `device_invoke` | Open an app or link, call system functions, or download and install an APK |
+| `device_act` | Select a control, enter text, scroll, swipe, or return |
+
+Android intents open apps and system pages.
+Accessibility reads controls and performs interface actions.
+In background mode, Shizuku creates the separate display and supplies the required privileged operations.
+
+The same tool interface supports new apps without adding a model tool for each app.
+New app workflows still require checks with the actual app.
+
+## Development
+
+Run these commands from the repository root:
+
+```bash
 npm test
 npm run build
 npm run android:test
 npm run android:build
 ```
 
-构建成功只证明源码可编译。真实任务是否完成，仍需设备观察证据和重复 benchmark。
+Current checks cover 56 Node tests and 52 Android unit tests.
+Compilation and unit tests do not confirm compatibility with every phone or app.
+Physical devices, login handoff, screen-off operation, and long tasks need further checks.
 
-## 其他入口
+Current priorities are login and CAPTCHA handoff, independent chat transport, and physical phone compatibility.
 
-iOS 工程位于 `apps/ios/MobileAgentIOS.xcodeproj`。使用 Xcode 26+ 打开工程，为自己的开发者账号设置唯一 Bundle Identifier 与 Development Team 后构建。iOS 能力受系统公共 API 限制，详见[能力矩阵](docs/capability-matrix.md)。
+## Common problems
 
-桌面 MCP Runtime：
+| Problem | Action |
+|---|---|
+| The build cannot find the SDK | Set `ANDROID_HOME` to your Android SDK directory. |
+| ADB shows `unauthorized` | Accept the USB debugging request on the phone. |
+| The app cannot operate controls | Enable Mobile Agent in Accessibility settings. |
+| Background mode cannot start | Start Shizuku and authorize Mobile Agent. |
+| A task stops after the screen turns off | Turn on the screen. Unlock the device. Start a new task. |
+| An app requests login or a CAPTCHA | Stop the task. Complete the account step yourself. |
+| Dependency downloads are slow | Try the optional build mirror shown below. |
 
 ```bash
-npm ci
-npm run build
-codex mcp add mobile-device -- node "$(pwd)/dist/server.js"
+MOBILE_AGENT_USE_HUAWEI_MIRROR=1 npm run android:build
 ```
 
-可选 BYOK Gateway 的环境变量见 [.env.example](.env.example)。Gateway 默认只监听 `127.0.0.1`，设备写操作还需显式设置 `allow_device_actions=true`。
+## Contribute
 
-## 设计与证据
+Report a reproducible problem through [GitHub Issues](https://github.com/Hui-cd/mobile-agent-runtime/issues).
+Include the Android version, app version, task, and actual result.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for code contributions.
+Report security problems through [SECURITY.md](SECURITY.md).
 
-- [当前进展与目标](PROJECT_STATUS.md)
-- [Android 真机 L1 验收](docs/android-device-smoke.md)
-- [模拟器测试与飞书开发入口](docs/android-channel-development.md)
-- [安卓通用工具契约与验收](docs/android-general-tools.md)
-- [通用性与使用体验审查](docs/android-usability-review.md)
-- [目标与验收边界](docs/goal-v0.md)
-- [Android Agent 设计](docs/android-agent-design.md)
-- [产品与交互设计](docs/android-agent-product-and-interaction.md)
-- [平台能力矩阵](docs/capability-matrix.md)
-- [Benchmark 定义](docs/benchmark-v0.md)
-- [关键架构决策](docs/adr/)
+## License
 
-Benchmark 可能包含原始任务和结构化结果。只使用授权测试账号，并将导出文件视为敏感数据。
-
-## 参与项目
-
-提交问题或代码前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全漏洞不要提交公开 Issue，请按 [SECURITY.md](SECURITY.md) 私下报告。
-
-本项目采用 [Apache License 2.0](LICENSE)。`research/` 中引用或下载的上游项目仍遵循各自许可证，不能因本仓库的许可证而改变。
+Mobile Agent Runtime uses the [Apache License 2.0](LICENSE).
+Third-party components retain their own licenses.

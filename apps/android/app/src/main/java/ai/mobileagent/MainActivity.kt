@@ -20,6 +20,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.outlined.Smartphone
@@ -420,7 +425,7 @@ private fun Chat(state: AgentState, modifier: Modifier = Modifier) {
                         }, border = null) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             if (!user) Text(if (message.role == MessageRole.ERROR) "需要处理" else "Mobile Agent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(message.text, style = MaterialTheme.typography.bodyLarge,
+                            Text(if (message.role == MessageRole.AGENT) formatAgentText(message.text) else AnnotatedString(message.text), style = MaterialTheme.typography.bodyLarge,
                                 color = if (message.role == MessageRole.ERROR) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurface)
                         }
                     }
@@ -471,4 +476,15 @@ private fun TaskExample(icon: ImageVector, title: String, description: String, o
             Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
         }
     }
+}
+
+
+private fun formatAgentText(text: String): AnnotatedString = buildAnnotatedString {
+    var offset = 0
+    Regex("\\*\\*(.+?)\\*\\*").findAll(text).forEach { match ->
+        append(text.substring(offset, match.range.first))
+        withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(match.groupValues[1]) }
+        offset = match.range.last + 1
+    }
+    append(text.substring(offset))
 }

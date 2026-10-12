@@ -19,6 +19,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.AccessTime
@@ -227,10 +229,10 @@ private fun MobileAgentScreen(
     Scaffold(topBar = { TopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Box(Modifier.size(34.dp).background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(28.dp), contentAlignment = Alignment.Center) {
                     Icon(Icons.Outlined.Smartphone, contentDescription = null, modifier = Modifier.size(21.dp), tint = MaterialTheme.colorScheme.primary)
                 }
-                Text("Mobile Agent", style = MaterialTheme.typography.titleLarge)
+                Text("Mobile Agent", style = MaterialTheme.typography.titleMedium)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
@@ -258,9 +260,9 @@ private fun MobileAgentScreen(
     ) }) { padding ->
         Column(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.surfaceContainerLow))).padding(padding).padding(horizontal = 20.dp).imePadding()) {
             Row(Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                Surface(shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.primaryContainer,
+                Surface(shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.surfaceContainerLow,
                     modifier = Modifier.clickable(enabled = !state.running && !editingConfiguration, onClick = onToggleHidden)) {
-                    Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    Row(Modifier.padding(horizontal = 10.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                         Box(Modifier.size(6.dp).background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50)))
                         Text(if (hiddenEnabled) "后台模式" else "前台模式", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
@@ -374,8 +376,8 @@ private fun MobileAgentScreen(
                     val value = prompt.trim()
                     if (value.isNotEmpty() && canRun && onRun(value)) prompt = ""
                 }
-                Surface(Modifier.fillMaxWidth().padding(bottom = 14.dp), shape = RoundedCornerShape(26.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerLowest, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), shadowElevation = 1.dp) {
+                Surface(Modifier.fillMaxWidth().padding(bottom = 14.dp), shape = RoundedCornerShape(22.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), shadowElevation = 0.dp) {
                     Row(Modifier.padding(7.dp), verticalAlignment = Alignment.CenterVertically) {
                         TextField(prompt, { prompt = it }, Modifier.weight(1f),
                             placeholder = { Text("描述你想完成的任务…", style = MaterialTheme.typography.bodyMedium) },
@@ -410,12 +412,12 @@ private fun Chat(state: AgentState, modifier: Modifier = Modifier) {
                 val user = message.role == MessageRole.USER
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = if (user) Arrangement.End else Arrangement.Start) {
                     Surface(Modifier.fillMaxWidth(if (user) .86f else .97f),
-                        shape = if (user) RoundedCornerShape(22.dp, 22.dp, 6.dp, 22.dp) else RoundedCornerShape(6.dp, 22.dp, 22.dp, 22.dp),
+                        shape = if (user) RoundedCornerShape(22.dp, 22.dp, 6.dp, 22.dp) else RoundedCornerShape(16.dp),
                         color = when (message.role) {
                             MessageRole.USER -> MaterialTheme.colorScheme.primaryContainer
                             MessageRole.ERROR -> MaterialTheme.colorScheme.errorContainer
                             else -> MaterialTheme.colorScheme.surfaceContainerLowest
-                        }, border = if (user) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+                        }, border = null) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             if (!user) Text(if (message.role == MessageRole.ERROR) "需要处理" else "Mobile Agent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(message.text, style = MaterialTheme.typography.bodyLarge,
@@ -439,32 +441,34 @@ private fun ApprovalRow(label: String, value: String) {
 
 @Composable
 private fun EmptyTask(modifier: Modifier, onExample: (String) -> Unit) {
-    Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(top = 26.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text("从一句指令开始", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-        Text("你想让手机\n做些什么？", style = MaterialTheme.typography.headlineLarge)
-        Text("打开应用、查找内容，\n把需要完成的事交给 Agent。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(Modifier.height(18.dp))
-        Text("试试这些任务", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        TaskExample(Icons.Outlined.AccessTime, "看看时钟", "切到秒表，再返回闹钟", onClick = { onExample("打开时钟，进入秒表页，再返回闹钟页。") })
-        TaskExample(Icons.AutoMirrored.Outlined.ManageSearch, "查找设置", "搜索蓝牙，读出前三条结果", onClick = { onExample("打开系统设置，搜索 bluetooth，读取前三条可见结果，再返回设置首页。") })
-        TaskExample(Icons.Outlined.Download, "下载应用", "提供发行方地址，下载并安装 APK", onClick = { onExample("请帮我下载并安装应用。先向我确认发行方 APK 地址和预期包名。") })
-        Spacer(Modifier.height(14.dp))
+    Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(top = 62.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(Modifier.size(64.dp).background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer)), RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) {
+            Icon(Icons.Outlined.Smartphone, contentDescription = null, modifier = Modifier.size(30.dp), tint = MaterialTheme.colorScheme.primary)
+        }
+        Spacer(Modifier.height(24.dp))
+        Text("让手机，替你动手", style = MaterialTheme.typography.headlineLarge.copy(fontSize = 26.sp, lineHeight = 35.sp), textAlign = TextAlign.Center)
+        Spacer(Modifier.height(10.dp))
+        Text("说出目标，剩下的交给 Agent。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(42.dp))
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            TaskExample(Icons.Outlined.AccessTime, "看看时钟", "切换秒表与闹钟", onClick = { onExample("打开时钟，进入秒表页，再返回闹钟页。") })
+            TaskExample(Icons.AutoMirrored.Outlined.ManageSearch, "查找设置", "搜索蓝牙并读取结果", onClick = { onExample("打开系统设置，搜索 bluetooth，读取前三条可见结果，再返回设置首页。") })
+            TaskExample(Icons.Outlined.Download, "下载应用", "从官方地址安装 APK", onClick = { onExample("请帮我下载并安装应用。先向我确认发行方 APK 地址和预期包名。") })
+        }
+        Spacer(Modifier.height(20.dp))
     }
 }
 
 @Composable
 private fun TaskExample(icon: ImageVector, title: String, description: String, onClick: () -> Unit) {
-    Surface(onClick = onClick, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLowest, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
-        Row(Modifier.padding(16.dp).heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Box(Modifier.size(44.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
-                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
-            }
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(title, style = MaterialTheme.typography.titleMedium)
+    Surface(onClick = onClick, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainerLowest) {
+        Row(Modifier.padding(horizontal = 16.dp, vertical = 12.dp).heightIn(min = 40.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(title, style = MaterialTheme.typography.bodyMedium)
                 Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
         }
     }
 }
